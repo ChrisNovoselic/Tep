@@ -1,0 +1,291 @@
+PARAM NameFile,Iter,LastIter
+PRIV i,j,x,y,z,nmonth,sdata,accuracy
+IF 'PAR_TPN'$NameFile OR 'PAR_TPM'$NameFile OR 'PAR_TPD'$NameFile
+	PRIV NumHour
+	DIMEN NumHour(12)
+	IF 'PAR_TPD'$NameFile
+		STORE 24 TO NumHour
+*!*			FOR i = 1 TO 12
+*!*				NumHour (i) = 24
+*!*			endfor
+   	ELSE
+	   FOR i=1 TO 12  &&           I  II III  IV   V  VI VII VIII IX   X  XI XII
+	       NumHour(i)=VAL(SUBS(' 744 672 744 720 744 720 744 744 720 744 720 744',;
+	       4*(i-1)+1,4))
+	   ENDFOR
+	ENDIF
+ENDIF
+COPY FILE (NameFile) TO WRK.WRK
+n = FOPEN('WRK.WRK',0)
+sdata=CTOD(SUBSTR(FGETS(n),1,8))
+nmonth=MONTH(sdata)
+FOR i=2 TO 5                    && Со 2 по 5 строки во вх.файле -
+    = FGETS(n)                  && служебная информация
+ENDFOR    
+DO WHILE .T.
+   inblok=FGETS(n)
+   IF FEOF(n) &&SUBSTR(inblok,63,7)==''
+      EXIT
+   ENDIF
+   IF SUBSTR(inblok,63,7)==''
+      LOOP
+   ENDIF
+   x=SUBSTR(inblok,6,7)
+   y=SUBSTR(inblok,1,4)
+   accuracy=IIF(ALLTRIM(y)=='30',3,2)
+   IF ALLTRIM(y)==''
+      LOOP
+   ENDIF
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))==ALLTRIM(y)
+   DO CASE
+      CASE BL1 AND ALLTRIM(y)=='59'  && ОСОБЫЙ СЛУЧАЙ: норматив - средневзвешиваемый,
+                                      * но надо суммировать, причем только для '/1'
+           z=ROUND(VAL(SUBSTR(inblok,60,10))+VAL(&x)*IIF(Iter=1,0,1),accuracy)
+      CASE sum_norm      && норматив - суммируемый
+           z=ROUND(VAL(SUBSTR(inblok,60,10))+VAL(&x)*IIF(Iter=1,0,1),accuracy)
+      CASE NOT sum_norm  && норматив - средневзвешиваемый
+           z=ROUND((VAL(SUBSTR(inblok,60,10))+VAL(&x)*(Iter-1))/Iter,accuracy)
+           IF ('PAR_TPN'$NameFile OR 'PAR_TPM'$NameFile OR 'PAR_TPD'$NameFile);
+              AND INLIST(x,'blok5')
+              DO norm
+           ENDIF
+   ENDCASE
+   IF SUBSTR(&x,1,1)#'s'
+      REPLACE &x WITH STR(z,10,accuracy)
+   ENDIF
+ENDDO
+= FCLOSE(n)
+DELETE FILE WRK.WRK
+IF Iter=LastIter  && если итерация заключительная
+IF 'PAR_EL'$NameFile
+   IF BL5
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'
+      _2b5_d_2st=VAL(inblok.blok5)/VAL(inblok.station)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='4'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b5_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='7'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b5_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='10'  && ??? 1.10c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b5_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'   && ??? 1.2c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH inblok.blok5
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='3'
+      REPLACE inblok.station WITH inblok.blok5
+   ENDIF
+   IF BL1
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'
+      _2b1_d_2st=VAL(inblok.blok1)/VAL(inblok.station)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='4'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b1_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='7'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b1_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='10'  && ??? 1.10c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b1_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'   && ??? 1.2c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH inblok.blok1
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='3'
+      REPLACE inblok.station WITH inblok.blok1
+   ENDIF
+   IF BL2
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'
+      _2b2_d_2st=VAL(inblok.blok2)/VAL(inblok.station)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='4'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b2_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='7'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b2_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='10'  && ??? 1.10c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b2_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'   && ??? 1.2c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH inblok.blok2
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='3'
+      REPLACE inblok.station WITH inblok.blok2
+   ENDIF
+   IF BL3
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'
+      _2b3_d_2st=VAL(inblok.blok3)/VAL(inblok.station)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='4'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b3_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='7'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b3_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='10'  && ??? 1.10c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b3_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'   && ??? 1.2c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH inblok.blok3
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='3'
+      REPLACE inblok.station WITH inblok.blok3
+   ENDIF
+   IF BL4
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'
+      _2b4_d_2st=VAL(inblok.blok4)/VAL(inblok.station)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='4'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b4_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='7'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b4_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='10'  && ??? 1.10c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b4_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'   && ??? 1.2c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH inblok.blok4
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='3'
+      REPLACE inblok.station WITH inblok.blok4
+   ENDIF
+   IF BL6
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'
+      _2b6_d_2st=VAL(inblok.blok6)/VAL(inblok.station)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='4'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b6_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='7'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b6_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='10'  && ??? 1.10c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b6_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'   && ??? 1.2c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH inblok.blok6
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='3'
+      REPLACE inblok.station WITH inblok.blok6
+   ENDIF
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='12'
+   REPLACE inblok.station WITH STR(MAX(0,VAL(inblok.station)),10,2)
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='10.3'
+   REPLACE inblok.station WITH STR(VAL(inblok.blok1)+VAL(inblok.blok2)+VAL(inblok.blok3)+;
+   VAL(inblok.blok4)+VAL(inblok.blok5),10,2)
+ENDIF
+IF 'PAR_TP'$NameFile
+*  LOCATE FOR ALLTRIM(SUBSTR(order,2))=='30'
+*  REPLACE inblok.blok5 WITH IIF(SUBSTR(inblok.blok5,1,1)='s',inblok.blok5,;
+*  STR(VAL(inblok.blok5)*(-1),10,3))
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='37'
+   REPLACE inblok.blok2 WITH IIF(SUBSTR(inblok.blok2,1,1)='s',inblok.blok2,;
+   STR(VAL(inblok.blok2)+1,10,2))
+   REPLACE inblok.blok3 WITH IIF(SUBSTR(inblok.blok3,1,1)='s',inblok.blok3,;
+   STR(VAL(inblok.blok3)+1,10,2))
+   REPLACE inblok.blok4 WITH IIF(SUBSTR(inblok.blok4,1,1)='s',inblok.blok4,;
+   STR(VAL(inblok.blok4)+1,10,2))
+   REPLACE inblok.blok5 WITH IIF(SUBSTR(inblok.blok5,1,1)='s',inblok.blok5,;
+   STR(VAL(inblok.blok5)+1,10,2))
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='38'
+   REPLACE inblok.blok2 WITH IIF(SUBSTR(inblok.blok2,1,1)='s',inblok.blok2,;
+   STR(VAL(inblok.blok2)+1,10,2))
+   REPLACE inblok.blok3 WITH IIF(SUBSTR(inblok.blok3,1,1)='s',inblok.blok3,;
+   STR(VAL(inblok.blok3)+1,10,2))
+   REPLACE inblok.blok4 WITH IIF(SUBSTR(inblok.blok4,1,1)='s',inblok.blok4,;
+   STR(VAL(inblok.blok4)+1,10,2))
+   REPLACE inblok.blok5 WITH IIF(SUBSTR(inblok.blok5,1,1)='s',inblok.blok5,;
+   STR(VAL(inblok.blok5)+1,10,2))
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='46'
+   REPLACE inblok.blok2 WITH IIF(SUBSTR(inblok.blok2,1,1)='s',inblok.blok2,;
+   STR(VAL(inblok.blok2)*0.7,10,2))
+   REPLACE inblok.blok3 WITH IIF(SUBSTR(inblok.blok3,1,1)='s',inblok.blok3,;
+   STR(VAL(inblok.blok3)*0.7,10,2))
+   REPLACE inblok.blok4 WITH IIF(SUBSTR(inblok.blok4,1,1)='s',inblok.blok4,;
+   STR(VAL(inblok.blok4)*0.7,10,2))
+   REPLACE inblok.blok5 WITH IIF(SUBSTR(inblok.blok5,1,1)='s',inblok.blok5,;
+   STR(VAL(inblok.blok5)*0.7*1E3,10,2))
+   IF BL5
+      PRIV v
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='31'
+      v=inblok.blok5
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='32'
+      REPLACE inblok.blok5 WITH v
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='31.1'
+      v=inblok.blok5
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='32.1'
+      REPLACE inblok.blok5 WITH v
+      RELEASE v
+   ENDIF
+ENDIF
+IF 'PAR_B1'$NameFile
+*  LOCATE FOR ALLTRIM(SUBSTR(order,2))=='19'
+*  SCATTER FIELDS blok1 MEMV
+*  LOCATE FOR ALLTRIM(SUBSTR(order,2))=='20'
+*  GATHER FIELDS blok1 MEMV
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='47'
+   REPL inblok.blok1 WITH IIF(SUBSTR(inblok.blok1,1,1)='s',inblok.blok1,;
+   STR(VAL(inblok.blok1)/1E3,10,2))
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='37'
+   REPL inblok.blok1 WITH IIF(SUBSTR(inblok.blok1,1,1)='s',inblok.blok1,;
+   STR(VAL(inblok.blok1)+1,10,2))
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='38'
+   REPL inblok.blok1 WITH IIF(SUBSTR(inblok.blok1,1,1)='s',inblok.blok1,;
+   STR(VAL(inblok.blok1)+1,10,2))
+*  LOCATE FOR ALLTRIM(SUBSTR(order,2))=='30'
+*  REPL inblok.blok1 WITH IIF(SUBSTR(inblok.blok1,1,1)='s',inblok.blok1,;
+*  STR(VAL(inblok.blok1)*(-1),10,3))
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='46'
+   REPL inblok.blok1 WITH IIF(SUBSTR(inblok.blok1,1,1)='s',inblok.blok1,;
+   STR(VAL(inblok.blok1)*.7,10,2))
+   IF BL1
+      PRIV v
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='31'
+      v=inblok.blok1
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='32'
+      REPLACE inblok.blok1 WITH v
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='31.1'
+      v=inblok.blok1
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='32.1'
+      REPLACE inblok.blok1 WITH v
+      RELEASE v
+   ENDIF
+ENDIF
+IF 'PAR_B6'$NameFile
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='30'
+   REPL inblok.blok6 WITH IIF(SUBSTR(inblok.blok6,1,1)='s',inblok.blok6,;
+   STR(VAL(inblok.blok6)/1e4,10,3))
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='37'
+   REPL inblok.blok6 WITH IIF(SUBSTR(inblok.blok6,1,1)='s',inblok.blok6,;
+   STR(VAL(inblok.blok6)+1,10,2))
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='38'
+   REPL inblok.blok6 WITH IIF(SUBSTR(inblok.blok6,1,1)='s',inblok.blok6,;
+   STR(VAL(inblok.blok6)+1,10,2))
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='46'
+   REPL inblok.blok6 WITH IIF(SUBSTR(inblok.blok6,1,1)='s',inblok.blok6,;
+   STR(VAL(inblok.blok6)*0.7,10,2))
+ENDIF
+ENDIF          && если итерация заключительная
+********************************************************************
+PROC norm
+PRIV recno,RealNumHour
+IF 'PAR_TPM'$NameFile
+   nmonth=IIF(nmonth=1,12,nmonth-1)
+ENDIF
+recno=recno()
+GO TOP
+IF SUBSTR(&x,1,1)#'s'
+   RealNumHour=VAL(&x)
+   z=ROUND(z*NumHour(nmonth)/RealNumHour,accuracy)
+ENDIF
+LOCATE RECORD recno
