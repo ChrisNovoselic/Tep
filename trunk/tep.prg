@@ -5,7 +5,9 @@ PARAMETER BL,KTSpath,RealTime,resolut
 * параметр resolut => разрешение экрана
 PUBLIC BL1,BL2,BL3,BL4,BL5,BL6,;
 		DefaultDir, ProgramDir
-PRIVATE tauWork
+PRIVATE tauWork, resolutWidthDefault, resolutHeightDefault
+resolutWidthDefault = 1100
+resolutHeightDefault = 700
 DO CASE
    CASE PARAM()=1
         BL1=IIF(BL='/1',.T.,.F.)
@@ -16,7 +18,7 @@ DO CASE
         BL6=IIF(BL='/6',.T.,.F.)
         KTSpath='W:\KTC'
         RealTime=.F.
-        resolut=800
+        resolut=resolutWidthDefault 
    CASE PARAM()=2
         BL1=IIF(BL='/1',.T.,.F.)
         BL2=IIF(BL='/2',.T.,.F.)
@@ -26,7 +28,7 @@ DO CASE
         BL6=IIF(BL='/6',.T.,.F.)
         * KTSpath='W:\KTC'
         RealTime=.F.
-        resolut=800
+        resolut=resolutWidthDefault 
    CASE PARAM()=3
         BL1=IIF(BL='/1',.T.,.F.)
         BL2=IIF(BL='/2',.T.,.F.)
@@ -36,7 +38,7 @@ DO CASE
         BL6=IIF(BL='/6',.T.,.F.)
         * KTSpath='W:\KTC'
         RealTime=IIF(RealTime='/RT',.T.,.F.)
-        resolut=800
+        resolut=resolutWidthDefault 
    CASE PARAM()=4
         BL1=IIF(BL='/1',.T.,.F.)
         BL2=IIF(BL='/2',.T.,.F.)
@@ -55,7 +57,7 @@ DO CASE
         BL6=.F.
         KTSpath='W:\KTC'
         RealTime=.F.
-        resolut=800
+        resolut=resolutWidthDefault 
 ENDCASE
 
 DefaultDir=FULLPATH('.')
@@ -91,8 +93,8 @@ WITH _Screen
 *    .ControlBox=.F.
      .Closable=.F.
      .MaxButton=.F.
-     .Height=575
-     .MinHeight=575
+     .Height=resolutHeightDefault
+     .MinHeight=resolutHeightDefault
      .Width=resolut
      .MinWidth=resolut
      .Caption="Расчет ТЭП"
@@ -215,24 +217,24 @@ USE
 
 DO scr WITH "","bg+/n"
 SET CURSOR OFF
-@ 10,22 SAY "              РАСЧЁТ       " FONT "Courier New",12
-@ 12,22 SAY "ТЕХНИКО - ЭКОНОМИЧЕСКИХ ПОКАЗАТЕЛЕЙ" FONT "Courier New",12
-@ 14,22 SAY "        Новосибирской ТЭЦ-5" FONT "Courier New",12
+@ 17,27 SAY "              РАСЧЁТ       " FONT "Courier New",12
+@ 19,27 SAY "ТЕХНИКО - ЭКОНОМИЧЕСКИХ ПОКАЗАТЕЛЕЙ" FONT "Courier New",12
+@ 21,27 SAY "        Новосибирской ТЭЦ-5" FONT "Courier New",12
 WAIT '' TIMEOUT 2
 CLEAR
 SET CURSOR ON
 IF NOT RealTime
-   @ 10,22 SAY "         Вводите даты:" FONT "Courier New",12
-   @ 12,12 SAY "начало контролируемого периода" FONT "Courier New",12
-   @ 13,12 SAY "конец контролируемого периода" FONT "Courier New",12
+   @ 16,37 SAY "         Вводите даты:" FONT "Courier New",12
+   @ 19,27 SAY "начало контролируемого периода" FONT "Courier New",12
+   @ 20,27 SAY "конец контролируемого периода" FONT "Courier New",12
    i=78
    DO WHILE i=78 OR i=110
-      @ 12,46 GET n_k_p DEFAULT {  .  .  } FONT "Courier New",12
-      @ 13,46 GET k_k_p DEFAULT {  .  .  } FONT "Courier New",12
+      @ 19,61 GET n_k_p DEFAULT {  .  .  } FONT "Courier New",12
+      @ 20,61 GET k_k_p DEFAULT {  .  .  } FONT "Courier New",12
       READ
-      @ 15,12 SAY "Вы удовлетворены, (Y/N) ?" FONT "Courier New",12
+      @ 23,27 SAY "Вы удовлетворены, (Y/N) ?" FONT "Courier New",12
       WAIT ''
-      @ 15,00 SAY SPACE(80) FONT "Courier New",12
+      @ 23,00 SAY SPACE(80) FONT "Courier New",12
       i=lastkey()
    ENDDO
 ENDIF
