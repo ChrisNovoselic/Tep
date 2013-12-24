@@ -49,66 +49,66 @@ STORE '    -' TO a1,a2,a3
 STORE '' TO titul
 FOR i=1 TO 6
     ON ERROR a1(1,i)='    -'
-    a1(1,i)=iom(u('30'),i)*iom(u('1'),i)
+    a1(1,i)=iom(getIndexOfIIoM('30'),i)*iom(getIndexOfIIoM('1'),i)
     ON ERROR
     a1(1,7)=VV('a1(1,7)')+ROUND(VV('a1(1,i)'),0)
-    a1(2,i)=inm(i('4.1'),i)
+    a1(2,i)=inm(getIndexOfIInM('4.1'),i)
     a1(2,7)=VV('a1(2,7)')+ROUND(VV('a1(2,i)'),0)
     ON ERROR a1(3,i)='    -'
-    a1(3,i)=iom(u('31'),i)*iom(u('1'),i)
+    a1(3,i)=iom(getIndexOfIIoM('31'),i)*iom(getIndexOfIIoM('1'),i)
     ON ERROR
     a1(3,7)=VV('a1(3,7)')+ROUND(VV('a1(3,i)'),0)
-    a1(4,i)=inm(i('4.2'),i)
+    a1(4,i)=inm(getIndexOfIInM('4.2'),i)
     a1(4,7)=VV('a1(4,7)')+ROUND(VV('a1(4,i)'),0)
 ENDFOR
 titul(1,1)=' онденсатные насосы т/а и ѕЌЁ (тыс.к¬тч)'
 titul(2,1)='ѕрочие блочные механизмы т/а (тыс.к¬тч)'
 ON ERROR a1(5,7)='    -'
-a1(5,7)=iom(u('32'),7)*inm(i('70'),7)
+a1(5,7)=iom(getIndexOfIIoM('32'),7)*inm(getIndexOfIInM('70'),7)
 ON ERROR
-a1(6,7)=inm(i('5'),7)
+a1(6,7)=inm(getIndexOfIInM('5'),7)
 titul(3,1)='ѕрочие общестанционные механизмы турбинного отделени€ (тыс.к¬тч)'
 ON ERROR a1(7,7)='    -'
-a1(7,7)=iom(u('29'),7)*inm(i('70'),7)
+a1(7,7)=iom(getIndexOfIIoM('29'),7)*inm(getIndexOfIInM('70'),7)
 ON ERROR
-a1(8,7)=inm(i('6'),7)
+a1(8,7)=inm(getIndexOfIInM('6'),7)
 titul(4,1)='÷иркул€ционные насосы (тыс.к¬тч)'
 FOR i=1 TO 6
     ON ERROR a1(9,i)='    -'
-    a1(9,i)=1.03*(iom(u('30'),i)*iom(u('1'),i)+iom(u('31'),i)*iom(u('1'),i)+;
-    (iom(u('29'),7)+iom(u('32'),7))*inm(i('70'),7)*iom(u('2'),i)/iom(u('2'),7))+;
-    iom(u('35'),i)
+    a1(9,i)=1.03*(iom(getIndexOfIIoM('30'),i)*iom(getIndexOfIIoM('1'),i)+iom(getIndexOfIIoM('31'),i)*iom(getIndexOfIIoM('1'),i)+;
+    (iom(getIndexOfIIoM('29'),7)+iom(getIndexOfIIoM('32'),7))*inm(getIndexOfIInM('70'),7)*iom(getIndexOfIIoM('2'),i)/iom(getIndexOfIIoM('2'),7))+;
+    iom(getIndexOfIIoM('35'),i)
     ON ERROR
-    a1(10,i)=outm(o('28'),i)
+    a1(10,i)=outm(getIndexOfIOutM('28'),i)
 ENDFOR
 STORE 0 TO sum1,sum2
 FOR i=1 TO 6
-    v1=iom(u('30'),i)
-    v2=iom(u('1'),i)
+    v1=iom(getIndexOfIIoM('30'),i)
+    v2=iom(getIndexOfIIoM('1'),i)
     IF TYPE('v1')='C' OR TYPE('v2')='C'
        LOOP
     ENDIF
     sum1=sum1+v1*v2
 ENDFOR
 FOR i=1 TO 6
-    v1=iom(u('31'),i)
-    v2=iom(u('1'),i)
+    v1=iom(getIndexOfIIoM('31'),i)
+    v2=iom(getIndexOfIIoM('1'),i)
     IF TYPE('v1')='C' OR TYPE('v2')='C'
        LOOP
     ENDIF
     sum2=sum2+v1*v2
 ENDFOR
 ON ERROR a1(9,7)='    -'
-a1(9,7)=1.03*(sum1+sum2+(iom(u('29'),7)+iom(u('32'),7))*inm(i('70'),7))+SUM('iom(u("35"),')
+a1(9,7)=1.03*(sum1+sum2+(iom(getIndexOfIIoM('29'),7)+iom(getIndexOfIIoM('32'),7))*inm(getIndexOfIInM('70'),7))+SUM('iom(getIndexOfIIoM("35"),')
 ON ERROR
-a1(10,7)=outm(o('28'),7)
+a1(10,7)=outm(getIndexOfIOutM('28'),7)
 titul(5,1)='–асход электроэнергии на —Ќ турбоагрегата (тыс.к¬тч)'
 FOR i=1 TO 6
-    a1(11,i)=iom(u('36'),i)
-    a1(12,i)=outm(o('148'),i)
+    a1(11,i)=iom(getIndexOfIIoM('36'),i)
+    a1(12,i)=outm(getIndexOfIOutM('148'),i)
 ENDFOR
-a1(11,7)=iom(u('36'),7)
-a1(12,7)=outm(o('148'),7)
+a1(11,7)=iom(getIndexOfIIoM('36'),7)
+a1(12,7)=outm(getIndexOfIOutM('148'),7)
 titul(6,1)='–асход электроэнергии на —Ќ турбоагрегата (%)'
 FOR i=1 TO 12
 FOR j=1 TO 7
@@ -116,72 +116,72 @@ FOR j=1 TO 7
 ENDFOR
 ENDFOR
 FOR i=1 TO 6
-    a2(1,i)=outm(o('159'),i)
-    a2(2,i)=outm(o('160'),i)
-    a2(3,i)=outm(o('161'),i)
-    a2(4,i)=outm(o('162'),i)
-    a2(5,i)=outm(o('157'),i)
-    a2(6,i)=outm(o('158'),i)
+    a2(1,i)=outm(getIndexOfIOutM('159'),i)
+    a2(2,i)=outm(getIndexOfIOutM('160'),i)
+    a2(3,i)=outm(getIndexOfIOutM('161'),i)
+    a2(4,i)=outm(getIndexOfIOutM('162'),i)
+    a2(5,i)=outm(getIndexOfIOutM('157'),i)
+    a2(6,i)=outm(getIndexOfIOutM('158'),i)
 ENDFOR
-a2(1,7)=outm(o('159'),7)
-a2(2,7)=outm(o('160'),7)
+a2(1,7)=outm(getIndexOfIOutM('159'),7)
+a2(2,7)=outm(getIndexOfIOutM('160'),7)
 titul(1,2)='ѕЁЌы (к¬тч/т.воды)'
-a2(3,7)=outm(o('161'),7)
-a2(4,7)=outm(o('162'),7)
+a2(3,7)=outm(getIndexOfIOutM('161'),7)
+a2(4,7)=outm(getIndexOfIOutM('162'),7)
 titul(2,2)='“€га и дутье (к¬тч/√кал)'
-a2(5,7)=outm(o('157'),7)
-a2(6,7)=outm(o('158'),7)
+a2(5,7)=outm(getIndexOfIOutM('157'),7)
+a2(6,7)=outm(getIndexOfIOutM('158'),7)
 titul(3,2)='ѕылеприготовление (к¬тч/тнт)'
 ON ERROR a2(7,7)='    -'
-a2(7,7)=iom(u('101'),7)*inm(i('88'),7)/1E3
+a2(7,7)=iom(getIndexOfIIoM('101'),7)*inm(getIndexOfIInM('88'),7)/1E3
 ON ERROR
-a2(8,7)=inm(i('9.1'),7)
+a2(8,7)=inm(getIndexOfIInM('9.1'),7)
 titul(4,2)='¬ыгрузка твердого топлива (тыс.к¬тч)'
 STORE 0 TO sum1
 FOR i=1 TO 6
-    v1=iom(u('100'),i)
-    v2=iom(u('90'),i)
+    v1=iom(getIndexOfIIoM('100'),i)
+    v2=iom(getIndexOfIIoM('90'),i)
     IF TYPE('v1')='C' OR TYPE('v2')='C'
        LOOP
     ENDIF
     sum1=sum1+v1*v2
 ENDFOR
 a2(9,7)=sum1/1E3
-a2(10,7)=inm(i('9.2'),7)
+a2(10,7)=inm(getIndexOfIInM('9.2'),7)
 titul(5,2)='ѕодача твердого топлива на технологию (тыс.к¬тч)'
 ON ERROR a2(11,7)='    -'
-a2(11,7)=iom(u('102'),7)*inm(i('70'),7)/1E3
+a2(11,7)=iom(getIndexOfIIoM('102'),7)*inm(getIndexOfIInM('70'),7)/1E3
 ON ERROR
 ON ERROR a2(12,7)='    -'
-a2(12,7)=inm(i('9.3'),7)+inm(i('9.4'),7)
+a2(12,7)=inm(getIndexOfIInM('9.3'),7)+inm(getIndexOfIInM('9.4'),7)
 ON ERROR
 titul(6,2)='«олошлакоудаление + электрофильтры (включа€ компрессор ¬”—) (тыс.к¬тч)'
 ON ERROR a2(13,7)='    -'
-a2(13,7)=232.6*inm(i('70'),7)/1E3
+a2(13,7)=232.6*inm(getIndexOfIInM('70'),7)/1E3
 ON ERROR
-a2(14,7)=inm(i('9.5'),7)
+a2(14,7)=inm(getIndexOfIInM('9.5'),7)
 titul(7,2)='ћазутонасосна€ (тыс.к¬тч)'
 ON ERROR a2(15,7)='    -'
-a2(15,7)=iom(u('103'),7)*inm(i('70'),7)/1E3
+a2(15,7)=iom(getIndexOfIIoM('103'),7)*inm(getIndexOfIInM('70'),7)/1E3
 ON ERROR
-a2(16,7)=inm(i('9.6'),7)
+a2(16,7)=inm(getIndexOfIInM('9.6'),7)
 titul(8,2)='’¬ќ (подпитка котлов) (тыс.к¬тч)'
 ON ERROR a2(17,7)='    -'
-a2(17,7)=iom(u('105'),7)*inm(i('70'),7)/1E3
+a2(17,7)=iom(getIndexOfIIoM('105'),7)*inm(getIndexOfIInM('70'),7)/1E3
 ON ERROR
-a2(18,7)=inm(i('9.7'),7)
+a2(18,7)=inm(getIndexOfIInM('9.7'),7)
 titul(9,2)='ƒополнительные прочие по котлу (тыс.к¬тч)'
 FOR i=1 TO 6
-    a2(19,i)=iom(u('108'),i)
-    a2(20,i)=outm(o('29'),i)
-    a2(21,i)=outm(o('155'),i)
-    a2(22,i)=outm(o('156'),i)
+    a2(19,i)=iom(getIndexOfIIoM('108'),i)
+    a2(20,i)=outm(getIndexOfIOutM('29'),i)
+    a2(21,i)=outm(getIndexOfIOutM('155'),i)
+    a2(22,i)=outm(getIndexOfIOutM('156'),i)
 ENDFOR
-a2(19,7)=iom(u('108'),7)
-a2(20,7)=outm(o('29'),7)
+a2(19,7)=iom(getIndexOfIIoM('108'),7)
+a2(20,7)=outm(getIndexOfIOutM('29'),7)
 titul(10,2)='—уммарный расход электроэнергии на —Ќ котла (тыс.к¬тч)'
-a2(21,7)=outm(o('155'),7)
-a2(22,7)=outm(o('156'),7)
+a2(21,7)=outm(getIndexOfIOutM('155'),7)
+a2(22,7)=outm(getIndexOfIOutM('156'),7)
 titul(11,2)='—уммарный расход электроэнергии на —Ќ котла (%)'
 FOR i=1 TO 22
 FOR j=1 TO 7
@@ -191,13 +191,13 @@ ENDFOR
 ENDFOR
 FOR i=1 TO 6
     ON ERROR a3(1,i)='    -'
-    a3(1,i)=iom(u('139'),i)*inm(i('71'),i)
+    a3(1,i)=iom(getIndexOfIIoM('139'),i)*inm(getIndexOfIInM('71'),i)
     ON ERROR
 ENDFOR
 STORE 0 TO sum1
 FOR i=1 TO 6
-    v1=iom(u('139'),i)
-    v2=inm(i('71'),i)
+    v1=iom(getIndexOfIIoM('139'),i)
+    v2=inm(getIndexOfIInM('71'),i)
     IF TYPE('v1')='C' OR TYPE('v2')='C'
        LOOP
     ENDIF
@@ -206,39 +206,39 @@ ENDFOR
 a3(1,7)=sum1
 FOR i=1 TO 6
     ON ERROR a3(2,i)='    -'
-    a3(2,i)=inm(i('10.1'),i)+inm(i('10.2'),i)
+    a3(2,i)=inm(getIndexOfIInM('10.1'),i)+inm(getIndexOfIInM('10.2'),i)
     ON ERROR
     ON ERROR a3(3,i)='    -'
-    a3(3,i)=iom(u('143'),i)*inm(i('71'),i)
+    a3(3,i)=iom(getIndexOfIIoM('143'),i)*inm(getIndexOfIInM('71'),i)
     ON ERROR
     a3(3,7)=VV('a3(3,7)')+ROUND(VV('a3(3,i)'),0)
-    a3(4,i)=inm(i('10.3'),i)
+    a3(4,i)=inm(getIndexOfIInM('10.3'),i)
     a3(4,7)=VV('a3(4,7)')+ROUND(VV('a3(4,i)'),0)
-    a3(9,i)=iom(u('144'),i)
-    a3(10,i)=outm(o('27'),i)
-    a3(11,i)=outm(o('153'),i)
-    a3(12,i)=outm(o('154'),i)
+    a3(9,i)=iom(getIndexOfIIoM('144'),i)
+    a3(10,i)=outm(getIndexOfIOutM('27'),i)
+    a3(11,i)=outm(getIndexOfIOutM('153'),i)
+    a3(12,i)=outm(getIndexOfIOutM('154'),i)
 ENDFOR
 ON ERROR a3(2,7)='    -'
-a3(2,7)=inm(i('10.1'),7)+inm(i('10.2'),7)+inm(i('10.4'),7)
+a3(2,7)=inm(getIndexOfIInM('10.1'),7)+inm(getIndexOfIInM('10.2'),7)+inm(getIndexOfIInM('10.4'),7)
 ON ERROR
 titul(1,3)='—етевые и подпорные насосы (тыс.к¬тч)'
 titul(2,3)=' онденсатные насосы ѕ—√ (тыс.к¬тч)'
 ON ERROR a3(5,7)='    -'
-a3(5,7)=iom(u('141'),7)*inm(i('71'),7)
+a3(5,7)=iom(getIndexOfIIoM('141'),7)*inm(getIndexOfIInM('71'),7)
 ON ERROR
-a3(6,7)=inm(i('11.1'),7)
+a3(6,7)=inm(getIndexOfIInM('11.1'),7)
 titul(3,3)='Ќасосы подпитки теплосети (тыс.к¬тч)'
 ON ERROR a3(7,7)='    -'
-a3(7,7)=iom(u('142'),7)*inm(i('71'),7)
+a3(7,7)=iom(getIndexOfIIoM('142'),7)*inm(getIndexOfIInM('71'),7)
 ON ERROR
-a3(8,7)=inm(i('11.2'),7)
+a3(8,7)=inm(getIndexOfIInM('11.2'),7)
 titul(4,3)='’имводоочистка (подпитка теплосети) (тыс.к¬тч)'
-a3(9,7)=iom(u('144'),7)
-a3(10,7)=outm(o('27'),7)
+a3(9,7)=iom(getIndexOfIIoM('144'),7)
+a3(10,7)=outm(getIndexOfIOutM('27'),7)
 titul(5,3)='—уммарный расход электроэнергии на —Ќ теплофикационной установки (тыс.к¬тч)'
-a3(11,7)=outm(o('153'),7)
-a3(12,7)=outm(o('154'),7)
+a3(11,7)=outm(getIndexOfIOutM('153'),7)
+a3(12,7)=outm(getIndexOfIOutM('154'),7)
 titul(6,3)='—уммарный расход электроэнергии на —Ќ теплофикационной установки (к¬тч/√кал)'
 FOR i=1 TO 12
 FOR j=1 TO 7

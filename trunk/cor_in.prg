@@ -3,13 +3,13 @@ LOCAL ARRAY NumbHours(n_blokov+1)
 i1=0
 select inblok
 FOR k=1 TO n_blokov+1
-    NumbHours(k)=inm(i("1"),k)
+    NumbHours(k)=inm(getIndexOfIInM("1"),k)
 ENDFOR
 FOR i0=1 TO ALEN(cor_in_arr,1) && массив cor_in_arr из БД cor_in (в TEP.PRG)
-    j=i(TRIM(cor_in_arr(i0,1)))
+    j=getIndexOfIInM(TRIM(cor_in_arr(i0,1)))
     FOR k=1 TO n_blokov+1
         IF cor_in_arr(i0,2)='b' AND k<n_blokov+1 OR cor_in_arr(i0,2)='s' AND k=n_blokov+1
-        IF (ai(k)#7 AND inm(i("74"),k)=='1' AND ;
+        IF (ai(k)#7 AND inm(getIndexOfIInM("74"),k)=='1' AND ;
            (cor_in_arr(i0,1)='48    ' OR cor_in_arr(i0,1)='49    ')) OR ;
            (ai(k)=1 AND ;
            (cor_in_arr(i0,1)='17    ' OR cor_in_arr(i0,1)='17.1  ')) OR ;

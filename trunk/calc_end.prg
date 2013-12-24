@@ -28,26 +28,26 @@ ENDFOR
 ENDFOR
 RELEASE inm,iom,outm
 **********************************************************************
-FUNCTION i
-PARAMETER orde
+FUNCTION getIndexOfIInM
+PARAMETER el
 SET EXACT ON
-iorde=ASCAN(Iinm,orde)
+indx=ASCAN(Iinm,el)
 SET EXACT OFF
-RETURN(iorde)
+RETURN(indx)
 **********************************************************************
-FUNCTION u
-PARAMETER orde
+FUNCTION getIndexOfIIoM
+PARAMETER el
 SET EXACT ON
-iorde=ASCAN(Iiom,orde)
+indx=ASCAN(Iiom,el)
 SET EXACT OFF
-RETURN(iorde)
+RETURN(indx)
 **********************************************************************
-FUNCTION o
-PARAMETER orde
+FUNCTION getIndexOfIOutM
+PARAMETER el
 SET EXACT ON
-iorde=ASCAN(Ioutm,orde)
+indx=ASCAN(Ioutm,el)
 SET EXACT OFF
-RETURN(iorde)
+RETURN(indx)
 **********************************************************************
 PROC CIKL
 PARAMETERS m,part,round
@@ -57,8 +57,7 @@ ENDIF
 PRIVATE i
 FOR i=1 TO n_blokov
 ** яч.вых.т.не пересчитывыема => вычислений не делать
-    oum(m,i)=IIF(SUBSTR(outm(m,i),1,1)='=',VAL(oum(m,i)),;
-    IIF(round,ROUND(&part,exact(m,1)),&part))
+    oum(m,i)=IIF(SUBSTR(outm(m,i),1,1)='=',VAL(oum(m,i)),IIF(round,ROUND(&part,exact(m,1)),&part))
 ENDFOR
 *@ 0,11 SAY STR(m,4)
 @ 0,11 SAY PADL(Ioutm(m),6,' ')
@@ -77,8 +76,7 @@ PARAMETERS m,j,part
 PRIVATE i
 IF ASCAN(ai,j)>0
    i=ASCAN(ai,j)
-   oum(m,i)=IIF(SUBSTR(outm(m,i),1,1)='=',VAL(oum(m,i)),;
-                ROUND(&part,exact(m,1)))
+   oum(m,i)=IIF(SUBSTR(outm(m,i),1,1)='=',VAL(oum(m,i)),ROUND(&part,exact(m,1)))
 ENDIF
 **********************************************************************
 FUNCTION F3
