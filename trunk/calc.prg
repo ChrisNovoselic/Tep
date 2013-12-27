@@ -20,7 +20,7 @@ FOR i=1 TO ALEN(inm,1)
 	    ENDIF
 	ENDFOR    
 ENDFOR
-    
+
 FOR i=1 TO ALEN(outm,1)
 	FOR j=1 TO ALEN(outm,2)             && отсечение первого символа
 	    oum(i,j)=SUBSTR(outm(i,j),2)   && €вл€ющегос€ служебным

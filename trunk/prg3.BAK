@@ -274,8 +274,7 @@ PROCEDURE ravno  && вычислять/не вычислять блок/станцию ;
 				KEYBOARD "{TAB}{BACKTAB}"
 			ENDIF
 		CASE SUBSTR(x,1,4)='blok' OR x='station'
-			REPL &x WITH IIF(y='=',STRTRAN(&x,'=',''),'='+RIGHT(RTRIM(&x),9)),;
-			order WITH IIF(y='=',order,'='+RIGHT(order,5))
+			REPL &x WITH IIF(y='=',STRTRAN(&x,'=',''),'='+RIGHT(RTRIM(&x),9)),order WITH IIF(y='=',order,'='+RIGHT(order,5))
 			KEYBOARD "{TAB}{BACKTAB}"
 	ENDCASE
 endproc

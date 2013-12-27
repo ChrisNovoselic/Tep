@@ -106,28 +106,28 @@ DO CASE
       SET DEFAULT TO (DefaultDir)
       IF error=0
          USE inblok
-         
+
          && »з 'frsDir1.Unload'
          && SET TALK ON
          && SET COMPATIBLE FOXPLUS
          && SET COMPATIBLE ON
          && Ќо предџƒущ. разработчик в 'frsDir1.Unload' их ¬—≈√о-Ћ»Ўь ¬ќ——“јЌј¬ливает из сохрјЌ-х в 'frsDir1.Load'
          && поЁ“ќћу: 'frsDir1' Ќ≈ »—ѕќЋ№зу≈ћ «Ќј„ит и ¬ќ——“јЌј¬Ћиват№ Ќ≈„≈√ќ
-         
+
          && 1-е присвоение значени€ 'file_name' — ќѕ»–ќ¬јно из предыдущего пунк“а меню
-         
+
          && ѕри 2-м присваиван»и значени€ 'file_name'
          && «десь (так же как и в 'DIR.load') при назначении 'file_name' крайЌя€ буква м.б. не назначенј
 		 && т.к. к маске при вызов≈ 'ADIR' добавл€ет—€ '?'
-                  
+
          file_name='par_el'
          && Ќ≈ »—ѕќЋ№«”≈“—€
          && do forma dir
-         
+
          file_name='par_el5msc'
 		 && Ќ≈ »—ѕќЋ№«”≈“—€
          && do forma dir
-         
+
          file_name='par_e6'
          && Ќ≈ »—ѕќЋ№«”≈“—€
          && do forma dir
@@ -274,8 +274,7 @@ PROCEDURE ravno  && вычисл€ть/не вычисл€ть блок/станцию ;
 				KEYBOARD "{TAB}{BACKTAB}"
 			ENDIF
 		CASE SUBSTR(x,1,4)='blok' OR x='station'
-			REPL &x WITH IIF(y='=',STRTRAN(&x,'=',''),'='+RIGHT(RTRIM(&x),9)),;
-			order WITH IIF(y='=',order,'='+RIGHT(order,5))
+			REPL &x WITH IIF(y='=',STRTRAN(&x,'=',''),'='+RIGHT(RTRIM(&x),9)),order WITH IIF(y='=',order,'='+RIGHT(order,5))
 			KEYBOARD "{TAB}{BACKTAB}"
 	ENDCASE
 endproc
