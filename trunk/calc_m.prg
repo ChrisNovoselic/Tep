@@ -793,8 +793,7 @@ ENDIF
 PRIVATE i,part
 FOR i=1 TO 4
  part='part'+STR(i,1)
- oum(m,n_blokov+i)=IIF(SUBSTR(outm(m,n_blokov+i),1,1)='=',;
- VAL(oum(m,n_blokov+i)),IIF(round,ROUND(&part,exact(m,1)),&part))
+ oum(m,n_blokov+i)=IIF(SUBSTR(outm(m,n_blokov+i),1,1)='=',VAL(oum(m,n_blokov+i)),IIF(round,ROUND(&part,exact(m,1)),&part))
 ENDFOR
 *@ 0,11 SAY '+'+STR(m,3)
 @ 0,11 SAY PADL('+'+Ioutm(m),6,' ')

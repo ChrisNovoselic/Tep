@@ -36,30 +36,49 @@ ENDFOR
 ******** — ѕ–ќ¬≈– ќ…  ќ––≈ “Ќќ—“» ¬’.“јЅЋ. (proc COR_IN)***************
 ON ERROR i=i  && дл€ корректной обраб-ки строковых перем. в арифм.выр-€х
 
-
-DO CIKL WITH getIndexOfIOutM("1"),'200'                                                      && 1 Nу ср
-DO CIKL1 WITH getIndexOfIOutM("1"),1200,'    -',1200,'    -'                                 && 1 Nу ср
-DO CIKL1 WITH getIndexOfIOutM("2"),inm(getIndexOfIInM("76"),n_blokov+1),'    -',inm(getIndexOfIInM("76"),n_blokov+1),'    -'                                                && 2 Nм
-DO CIKL WITH getIndexOfIOutM("3"),'240'                                                      && 3 Qу ср
-DO CIKL1 WITH getIndexOfIOutM("3"),1440,'    -',1440,'    -'                                 && 3 Qу ср
-DO CIKL WITH getIndexOfIOutM("4"),'iom(getIndexOfIIoM("2"),i)'                                            && 4 Ёвыр
-DO CIKL1 WITH getIndexOfIOutM("4"),iom(getIndexOfIIoM("2"),n_blokov+1),'    -',iom(getIndexOfIIoM("2"),n_blokov+1),'    -' && 4 Ёвыр
-DO CIKL WITH getIndexOfIOutM("5"),'oum(getIndexOfIOutM("4"),i)/oum(getIndexOfIOutM("1"),i)'                              && 5 TAU э и
-DO CIKL1 WITH getIndexOfIOutM("5"),oum(getIndexOfIOutM("4"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1),'    -',;
-oum(getIndexOfIOutM("4"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1),'    -'                          && 5 TAU э и
-DO CIKL WITH getIndexOfIOutM("6"),'iom(getIndexOfIIoM("4"),i)'                                            && 6 Qпо
-DO CIKL1 WITH getIndexOfIOutM("6"),iom(getIndexOfIIoM("4"),n_blokov+1),'    -',iom(getIndexOfIIoM("4"),n_blokov+1),'    -' && 6 Q /по
-DO CIKL WITH getIndexOfIOutM("7"),'iom(getIndexOfIIoM("3"),i)'                                            && 7 Qто
-DO CIKL1 WITH getIndexOfIOutM("7"),iom(getIndexOfIIoM("3"),n_blokov+1),'    -',iom(getIndexOfIIoM("3"),n_blokov+1),'    -' && 7 Qто
-DO CIKL WITH getIndexOfIOutM("9"),'oum(getIndexOfIOutM("6"),i)+oum(getIndexOfIOutM("7"),i)'                              && 9 Q
-DO CIKL1 WITH getIndexOfIOutM("9"),SUM('oum(getIndexOfIOutM("9"),'),'    -',SUM('oum(getIndexOfIOutM("9"),'),'    -'     && 9 Q
-DO CIKL WITH getIndexOfIOutM("10"),'oum(getIndexOfIOutM("9"),i)/oum(getIndexOfIOutM("3"),i)'                             &&10 TAU т и
+&& 1 Nу ср
+DO CIKL WITH getIndexOfIOutM("1"),'200'
+&& 1 Nу ср
+DO CIKL1 WITH getIndexOfIOutM("1"),1200,'    -',1200,'    -'
+&& 2 Nм
+DO CIKL1 WITH getIndexOfIOutM("2"),inm(getIndexOfIInM("76"),n_blokov+1),'    -',inm(getIndexOfIInM("76"),n_blokov+1),'    -'
+&& 3 Qу ср
+DO CIKL WITH getIndexOfIOutM("3"),'240'
+&& 3 Qу ср
+DO CIKL1 WITH getIndexOfIOutM("3"),1440,'    -',1440,'    -'
+&& 4 Ёвыр
+DO CIKL WITH getIndexOfIOutM("4"),'iom(getIndexOfIIoM("2"),i)'
+&& 4 Ёвыр
+DO CIKL1 WITH getIndexOfIOutM("4"),iom(getIndexOfIIoM("2"),n_blokov+1),'    -',iom(getIndexOfIIoM("2"),n_blokov+1),'    -'
+&& 5 TAU э и
+DO CIKL WITH getIndexOfIOutM("5"),'oum(getIndexOfIOutM("4"),i)/oum(getIndexOfIOutM("1"),i)'
+&& 5 TAU э и
+DO CIKL1 WITH getIndexOfIOutM("5"),oum(getIndexOfIOutM("4"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1),'    -',oum(getIndexOfIOutM("4"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1),'    -'
+&& 6 Qпо
+DO CIKL WITH getIndexOfIOutM("6"),'iom(getIndexOfIIoM("4"),i)'
+&& 6 Q /по
+DO CIKL1 WITH getIndexOfIOutM("6"),iom(getIndexOfIIoM("4"),n_blokov+1),'    -',iom(getIndexOfIIoM("4"),n_blokov+1),'    -'
+&& 7 Qто
+DO CIKL WITH getIndexOfIOutM("7"),'iom(getIndexOfIIoM("3"),i)'                                            
+&& 7 Qто
+DO CIKL1 WITH getIndexOfIOutM("7"),iom(getIndexOfIIoM("3"),n_blokov+1),'    -',iom(getIndexOfIIoM("3"),n_blokov+1),'    -'
+&& 9 Q
+DO CIKL WITH getIndexOfIOutM("9"),'oum(getIndexOfIOutM("6"),i)+oum(getIndexOfIOutM("7"),i)'
+&& 9 Q
+DO CIKL1 WITH getIndexOfIOutM("9"),SUM('oum(getIndexOfIOutM("9"),'),'    -',SUM('oum(getIndexOfIOutM("9"),'),'    -'
+&&10 TAU т и
+DO CIKL WITH getIndexOfIOutM("10"),'oum(getIndexOfIOutM("9"),i)/oum(getIndexOfIOutM("3"),i)'
+&&10 TAU т и
 DO CIKL1 WITH getIndexOfIOutM("10"),oum(getIndexOfIOutM("9"),n_blokov+1)/oum(getIndexOfIOutM("3"),n_blokov+1),'    -',;
-oum(getIndexOfIOutM("9"),n_blokov+1)/oum(getIndexOfIOutM("3"),n_blokov+1),'    -'                          &&10 TAU т и
-DO CIKL WITH getIndexOfIOutM("11"),'iom(getIndexOfIIoM("8"),i)'                                           &&11 Qотп
-DO CIKL1 WITH getIndexOfIOutM("11"),iom(getIndexOfIIoM("8"),n_blokov+1),'    -',iom(getIndexOfIIoM("5"),n_blokov+1),'    -' &&11 Qотп
-DO CIKL WITH getIndexOfIOutM("12"),'oum(getIndexOfIOutM("11"),i)-inm(getIndexOfIInM("83"),i)'                           &&12 Qот гв
-DO CIKL1 WITH getIndexOfIOutM("12"),SUM('oum(getIndexOfIOutM("12"),'),'    -',SUM('oum(getIndexOfIOutM("12"),'),'    -'  &&12 Qот гв
+oum(getIndexOfIOutM("9"),n_blokov+1)/oum(getIndexOfIOutM("3"),n_blokov+1),'    -'
+&&11 Qотп
+DO CIKL WITH getIndexOfIOutM("11"),'iom(getIndexOfIIoM("8"),i)'
+&&11 Qотп
+DO CIKL1 WITH getIndexOfIOutM("11"),iom(getIndexOfIIoM("8"),n_blokov+1),'    -',iom(getIndexOfIIoM("5"),n_blokov+1),'    -'
+&&12 Qот гв
+DO CIKL WITH getIndexOfIOutM("12"),'oum(getIndexOfIOutM("11"),i)-inm(getIndexOfIInM("83"),i)'
+&&12 Qот гв
+DO CIKL1 WITH getIndexOfIOutM("12"),SUM('oum(getIndexOfIOutM("12"),'),'    -',SUM('oum(getIndexOfIOutM("12"),'),'    -'
 DO CIKL WITH getIndexOfIOutM("13"),'iom(getIndexOfIIoM("8"),i)'                                           &&13 Qот отр
 DO CIKL1 WITH getIndexOfIOutM("13"),iom(getIndexOfIIoM("8"),n_blokov+1),'    -',iom(getIndexOfIIoM("8"),n_blokov+1),'    -' &&13 Qот отр
 DO CIKL WITH getIndexOfIOutM("15"),'(iom(getIndexOfIIoM("49"),i)*iom(getIndexOfIIoM("57.1"),i)+iom(getIndexOfIIoM("55"),i)*(iom(getIndexOfIIoM("59.1"),i)-'+;
