@@ -86,6 +86,13 @@ SET PROCEDURE TO CALC_END ADDITIVE
 *clear macro
 CLEAR
 
+IF RealTime=.T.
+	*** inblok копируется в bat-файле!!! ***
+	COPY FILE "W:\KTC\A\TEPW_RT\ftabl.dbf" TO ProgramDir+"ftabl.dbf"
+	*COPY FILE "W:\KTC\A\TEPW_RT\outblok.dbf" TO ProgramDir+"outblok.dbf"
+ELSE
+ENDIF
+
 WITH _Screen
      .FontName='Courier New'
      .FontSize=12

@@ -86,6 +86,13 @@ SET PROCEDURE TO CALC_END ADDITIVE
 *clear macro
 CLEAR
 
+IF RealTime=.T.
+	*** inblok копируется в bat-файле!!! ***
+	COPY FILE "W:\KTC\A\TEPW_RT\ftabl.dbf" TO ProgramDir+"ftabl.dbf"
+	COPY FILE "W:\KTC\A\TEPW_RT\outblok.dbf" TO ProgramDir+"outblok.dbf"
+ELSE
+ENDIF
+
 WITH _Screen
      .FontName='Courier New'
      .FontSize=12
@@ -217,22 +224,22 @@ USE
 
 DO scr WITH "","bg+/n"
 SET CURSOR OFF
-@ 17,22 SAY "              РАСЧЁТ       " FONT "Courier New",12
-@ 19,22 SAY "ТЕХНИКО - ЭКОНОМИЧЕСКИХ ПОКАЗАТЕЛЕЙ" FONT "Courier New",12
-@ 21,22 SAY "        Новосибирской ТЭЦ-5" FONT "Courier New",12
+@ 17,27 SAY "              РАСЧЁТ       " FONT "Courier New",12
+@ 19,27 SAY "ТЕХНИКО - ЭКОНОМИЧЕСКИХ ПОКАЗАТЕЛЕЙ" FONT "Courier New",12
+@ 21,27 SAY "        Новосибирской ТЭЦ-5" FONT "Courier New",12
 WAIT '' TIMEOUT 2
 CLEAR
 SET CURSOR ON
 IF NOT RealTime
-   @ 16,42 SAY "         Вводите даты:" FONT "Courier New",12
-   @ 19,32 SAY "начало контролируемого периода" FONT "Courier New",12
-   @ 20,32 SAY "конец контролируемого периода" FONT "Courier New",12
+   @ 16,37 SAY "         Вводите даты:" FONT "Courier New",12
+   @ 19,27 SAY "начало контролируемого периода" FONT "Courier New",12
+   @ 20,27 SAY "конец контролируемого периода" FONT "Courier New",12
    i=78
    DO WHILE i=78 OR i=110
-      @ 19,66 GET n_k_p DEFAULT {  .  .  } FONT "Courier New",12
-      @ 20,66 GET k_k_p DEFAULT {  .  .  } FONT "Courier New",12
+      @ 19,61 GET n_k_p DEFAULT {  .  .  } FONT "Courier New",12
+      @ 20,61 GET k_k_p DEFAULT {  .  .  } FONT "Courier New",12
       READ
-      @ 23,32 SAY "Вы удовлетворены, (Y/N) ?" FONT "Courier New",12
+      @ 23,27 SAY "Вы удовлетворены, (Y/N) ?" FONT "Courier New",12
       WAIT ''
       @ 23,00 SAY SPACE(80) FONT "Courier New",12
       i=lastkey()
