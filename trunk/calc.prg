@@ -31,111 +31,163 @@ ON ERROR i=i
 
 DO COR_IN.PRG  && ѕ–ќ¬≈– ј  ќ––≈ “Ќќ—“» ¬’.“јЅЋ.
 
-DO CIKL WITH getIndexOfIOutM("1"),'inm(getIndexOfIInM("1"),i)'                                            && 1 TAU раб
-oum(getIndexOfIOutM("1"),n_blokov+1)=CIKL1(getIndexOfIOutM("1"),SUM('inm(getIndexOfIInM("1"),'))                        && 1 TAU раб
+&& 1 TAU раб
+DO CIKL WITH getIndexOfIOutM("1"),'inm(getIndexOfIInM("1"),i)'
+oum(getIndexOfIOutM("1"),n_blokov+1)=CIKL1(getIndexOfIOutM("1"),SUM('inm(getIndexOfIInM("1"),'))
+&& 1 TAU раб
 
-DO CIKL WITH getIndexOfIOutM("2"),'inm(getIndexOfIInM("2"),i)'                                            && 2 Ё т
-oum(getIndexOfIOutM("2"),n_blokov+1)=CIKL1(getIndexOfIOutM("2"),SUM('inm(getIndexOfIInM("2"),'))                        && 2 Ё т
+&& 2 Ё т
+DO CIKL WITH getIndexOfIOutM("2"),'inm(getIndexOfIInM("2"),i)'
+oum(getIndexOfIOutM("2"),n_blokov+1)=CIKL1(getIndexOfIOutM("2"),SUM('inm(getIndexOfIInM("2"),'))
+&& 2 Ё т
 
 IF BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6
-	DO CIKL WITH getIndexOfIOutM("3"),'IIF(inm(getIndexOfIInM("47"),i)/inm(getIndexOfIInM("1"),i)<0.7,0,inm(getIndexOfIInM("47"),i)*(inm(getIndexOfIInM("48"),i)-inm(getIndexOfIInM("49"),i)))'                                                            && 3 Q то
+	&& 3 Q то
+	DO CIKL WITH getIndexOfIOutM("3"),'IIF(inm(getIndexOfIInM("47"),i)/inm(getIndexOfIInM("1"),i)<0.7,0,inm(getIndexOfIInM("47"),i)*(inm(getIndexOfIInM("48"),i)-inm(getIndexOfIInM("49"),i)))'
 ELSE
-	DO CIKL WITH getIndexOfIOutM("3"),'inm(getIndexOfIInM("47"),i)*(inm(getIndexOfIInM("48"),i)-inm(getIndexOfIInM("49"),i))'           && 3 Q то
+	&& 3 Q то
+	DO CIKL WITH getIndexOfIOutM("3"),'inm(getIndexOfIInM("47"),i)*(inm(getIndexOfIInM("48"),i)-inm(getIndexOfIInM("49"),i))'
 ENDIF
-oum(getIndexOfIOutM("3"),n_blokov+1)=CIKL1(getIndexOfIOutM("3"),SUM('oum(getIndexOfIOutM("3"),'))                        && 3 Q то
+oum(getIndexOfIOutM("3"),n_blokov+1)=CIKL1(getIndexOfIOutM("3"),SUM('oum(getIndexOfIOutM("3"),'))
+&& 3 Q то
 
+&& 4 Q пп
 IF BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6
-	DO CIKL WITH getIndexOfIOutM("4"),'IIF(oum(getIndexOfIOutM("3"),i)=0,0,inm(getIndexOfIInM("46"),i))'                    && 4 Q пп
+	DO CIKL WITH getIndexOfIOutM("4"),'IIF(oum(getIndexOfIOutM("3"),i)=0,0,inm(getIndexOfIInM("46"),i))'
 ELSE
-	DO CIKL WITH getIndexOfIOutM("4"),'inm(getIndexOfIInM("46"),i)'                                           && 4 Q пп
+	DO CIKL WITH getIndexOfIOutM("4"),'inm(getIndexOfIInM("46"),i)'
 ENDIF
+&& 4 Q пп
 
-oum(getIndexOfIOutM("4"),n_blokov+1)=CIKL1(getIndexOfIOutM("4"),SUM('oum(getIndexOfIOutM("4"),'))                        && 4 Q пп
-oum(getIndexOfIOutM("5"),n_blokov+1)=CIKL1(getIndexOfIOutM("5"),inm(getIndexOfIInM("81"),n_blokov+1))                   && 5 Q отп ст
-oum(getIndexOfIOutM("6"),n_blokov+1)=CIKL1(getIndexOfIOutM("6"),inm(getIndexOfIInM("82"),n_blokov+1))                   && 6 Q отп роу
+&& 4 Q пп
+oum(getIndexOfIOutM("4"),n_blokov+1)=CIKL1(getIndexOfIOutM("4"),SUM('oum(getIndexOfIOutM("4"),'))
 
+&& 5 Q отп ст
+oum(getIndexOfIOutM("5"),n_blokov+1)=CIKL1(getIndexOfIOutM("5"),inm(getIndexOfIInM("81"),n_blokov+1))
+
+&& 6 Q отп роу
+oum(getIndexOfIOutM("6"),n_blokov+1)=CIKL1(getIndexOfIOutM("6"),inm(getIndexOfIInM("82"),n_blokov+1))
+
+&& 6 Q отп роу
 IF BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6
-	DO CIKL WITH getIndexOfIOutM("6"),'oum(getIndexOfIOutM("4"),i)/2'                                          && 6 Q отп роу
+	DO CIKL WITH getIndexOfIOutM("6"),'oum(getIndexOfIOutM("4"),i)/2'
 ELSE
 sum=0
 FOR i=1 TO n_blokov
   sum=sum+IIF(oum(getIndexOfIOutM("3"),i)=0,0,oum(getIndexOfIOutM("4"),i))
 ENDFOR
-DO CIKL WITH getIndexOfIOutM("6"),'IIF(oum(getIndexOfIOutM("3"),i)=0,0,IIF(oum(getIndexOfIOutM("4"),i)=0,0,oum(getIndexOfIOutM("6"),n_blokov+1)*oum(getIndexOfIOutM("4"),i)/sum))'                                                          && 6 Q отп роу
+DO CIKL WITH getIndexOfIOutM("6"),'IIF(oum(getIndexOfIOutM("3"),i)=0,0,IIF(oum(getIndexOfIOutM("4"),i)=0,0,oum(getIndexOfIOutM("6"),n_blokov+1)*oum(getIndexOfIOutM("4"),i)/sum))'
 	IF SUM('oum(getIndexOfIOutM("6"),')#oum(getIndexOfIOutM("6"),n_blokov+1)   && устранение ошибк.округлени€
 	   oum(getIndexOfIOutM("6"),1)=oum(getIndexOfIOutM("6"),1)+IIF(SUM('oum(getIndexOfIOutM("6"),')<oum(getIndexOfIOutM("6"),n_blokov+1),1,-1)
 	ENDIF
 ENDIF
+&& 6 Q отп роу
 
-oum(getIndexOfIOutM("7"),n_blokov+1)=CIKL1(getIndexOfIOutM("7"),oum(getIndexOfIOutM("5"),n_blokov+1)-oum(getIndexOfIOutM("6"),n_blokov+1)-inm(getIndexOfIInM("85"),n_blokov+1))                                                       && 7 Q отп тепл
+&& 7 Q отп тепл
+oum(getIndexOfIOutM("7"),n_blokov+1)=CIKL1(getIndexOfIOutM("7"),oum(getIndexOfIOutM("5"),n_blokov+1)-oum(getIndexOfIOutM("6"),n_blokov+1)-inm(getIndexOfIInM("85"),n_blokov+1))
 IF BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6
-DO CIKL WITH getIndexOfIOutM("7"),'oum(getIndexOfIOutM("3"),i)*IIF(BETWEEN(MONTH(DATE()),6,9) OR MONTH(DATE())=5 AND DAY(DATE())>15,.97,.95)'&& 7 Q отп тепл
+	DO CIKL WITH getIndexOfIOutM("7"),'oum(getIndexOfIOutM("3"),i)*IIF(BETWEEN(MONTH(DATE()),6,9) OR MONTH(DATE())=5 AND DAY(DATE())>15,.97,.95)'
 ELSE
-DO CIKL WITH getIndexOfIOutM("7"),'IIF(oum(getIndexOfIOutM("3"),n_blokov+1)=0,0,oum(getIndexOfIOutM("7"),n_blokov+1)*oum(getIndexOfIOutM("3"),i)/oum(getIndexOfIOutM("3"),n_blokov+1))'                                                      && 7 Q отп тепл
-IF SUM('oum(getIndexOfIOutM("7"),')#oum(getIndexOfIOutM("7"),n_blokov+1)   && устранение ошибк.округлени€ 
-   oum(getIndexOfIOutM("7"),1)=oum(getIndexOfIOutM("7"),1)+IIF(SUM('oum(getIndexOfIOutM("7"),')<oum(getIndexOfIOutM("7"),n_blokov+1),1,-1)
+	DO CIKL WITH getIndexOfIOutM("7"),'IIF(oum(getIndexOfIOutM("3"),n_blokov+1)=0,0,oum(getIndexOfIOutM("7"),n_blokov+1)*oum(getIndexOfIOutM("3"),i)/oum(getIndexOfIOutM("3"),n_blokov+1))'
+	IF SUM('oum(getIndexOfIOutM("7"),')#oum(getIndexOfIOutM("7"),n_blokov+1)   && устранение ошибк.округлени€ 
+   		oum(getIndexOfIOutM("7"),1)=oum(getIndexOfIOutM("7"),1)+IIF(SUM('oum(getIndexOfIOutM("7"),')<oum(getIndexOfIOutM("7"),n_blokov+1),1,-1)
+	ENDIF
 ENDIF
-ENDIF
+&& 7 Q отп тепл
 
-DO CIKL WITH getIndexOfIOutM("8"),'oum(getIndexOfIOutM("6"),i)+oum(getIndexOfIOutM("7"),i)'                              && 8 Q отп
-oum(getIndexOfIOutM("8"),n_blokov+1)=CIKL1(getIndexOfIOutM("8"),SUM('oum(getIndexOfIOutM("8"),'))                        && 8 Q отп
+&& 8 Q отп
+DO CIKL WITH getIndexOfIOutM("8"),'oum(getIndexOfIOutM("6"),i)+oum(getIndexOfIOutM("7"),i)'
+oum(getIndexOfIOutM("8"),n_blokov+1)=CIKL1(getIndexOfIOutM("8"),SUM('oum(getIndexOfIOutM("8"),'))
+&& 8 Q отп
 
-DO CIKL WITH getIndexOfIOutM("9"),'oum(getIndexOfIOutM("2"),i)/oum(getIndexOfIOutM("1"),i)'                              && 9 N т
-oum(getIndexOfIOutM("9"),n_blokov+1)=CIKL1(getIndexOfIOutM("9"),oum(getIndexOfIOutM("2"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1))&& 9 N т
+&& 9 N т
+DO CIKL WITH getIndexOfIOutM("9"),'oum(getIndexOfIOutM("2"),i)/oum(getIndexOfIOutM("1"),i)'
+oum(getIndexOfIOutM("9"),n_blokov+1)=CIKL1(getIndexOfIOutM("9"),oum(getIndexOfIOutM("2"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1))
+&& 9 N т
 
-DO CIKL WITH getIndexOfIOutM("10"),'oum(getIndexOfIOutM("3"),i)/oum(getIndexOfIOutM("1"),i)'                             &&10 Q т ср
-oum(getIndexOfIOutM("10"),n_blokov+1)=CIKL1(getIndexOfIOutM("10"),oum(getIndexOfIOutM("3"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1))&&10 Q т ср
+&&10 Q т ср
+DO CIKL WITH getIndexOfIOutM("10"),'oum(getIndexOfIOutM("3"),i)/oum(getIndexOfIOutM("1"),i)'
+oum(getIndexOfIOutM("10"),n_blokov+1)=CIKL1(getIndexOfIOutM("10"),oum(getIndexOfIOutM("3"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1))
+&&10 Q т ср
 
-DO CIKL WITH getIndexOfIOutM("10.1"),'inm(getIndexOfIInM("37"),i)'                                        &&10.1 P вто
+&&10.1 P вто
+DO CIKL WITH getIndexOfIOutM("10.1"),'inm(getIndexOfIInM("37"),i)'
 
-DO CIKL WITH getIndexOfIOutM("11"),'oum(getIndexOfIOutM("4"),i)/oum(getIndexOfIOutM("1"),i)'                             &&11 Q роу ср
-oum(getIndexOfIOutM("11"),n_blokov+1)=CIKL1(getIndexOfIOutM("11"),oum(getIndexOfIOutM("4"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1))&&11 Q роу ср
+&&11 Q роу ср
+DO CIKL WITH getIndexOfIOutM("11"),'oum(getIndexOfIOutM("4"),i)/oum(getIndexOfIOutM("1"),i)'
+oum(getIndexOfIOutM("11"),n_blokov+1)=CIKL1(getIndexOfIOutM("11"),oum(getIndexOfIOutM("4"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1))
+&&11 Q роу ср
 
+&&12 q т бр (исх)
 *       sss=SECON()
 DO CIKL WITH getIndexOfIOutM("12"),'IIF(inm(getIndexOfIInM("74"),i)=="1",F1(oum(getIndexOfIOutM("9"),i),"2.40:1"),'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="2",F3(oum(getIndexOfIOutM("9"),i),oum(getIndexOfIOutM("10"),i),oum(getIndexOfIOutM("10.1"),i),"2.1:3"),'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="2а",F3(oum(getIndexOfIOutM("9"),i),oum(getIndexOfIOutM("10"),i),inm(getIndexOfIInM("38"),i),"2.86:3"),'+;
-'IIF(inm(getIndexOfIInM("74"),i)=="3",F2(oum(getIndexOfIOutM("9"),i),oum(getIndexOfIOutM("10.1"),i),"2.50:2"),1/0))))'  &&12 q т бр (исх)
+'IIF(inm(getIndexOfIInM("74"),i)=="3",F2(oum(getIndexOfIOutM("9"),i),oum(getIndexOfIOutM("10.1"),i),"2.50:2"),1/0))))'
+&&12 q т бр (исх)
 
+&&13 G o
 *       wait window (str(SECON()-sss,10,3))
 DO CIKL WITH getIndexOfIOutM("13"),'IIF(inm(getIndexOfIInM("74"),i)=="1",F1(oum(getIndexOfIOutM("9"),i),"2.55:1")+inm(getIndexOfIInM("46"),i)/.7/inm(getIndexOfIInM("1"),i),'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="2",F3(oum(getIndexOfIOutM("9"),i),oum(getIndexOfIOutM("10"),i),oum(getIndexOfIOutM("10.1"),i),"2.2:3")+inm(getIndexOfIInM("46"),i)/.7/inm(getIndexOfIInM("1"),i),'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="2а",F3(oum(getIndexOfIOutM("9"),i),oum(getIndexOfIOutM("10"),i),inm(getIndexOfIInM("38"),i),"2.87:3")+inm(getIndexOfIInM("46"),i)/.7/inm(getIndexOfIInM("1"),i),'+;
-'IIF(inm(getIndexOfIInM("74"),i)=="3",F3(oum(getIndexOfIOutM("9"),i),oum(getIndexOfIOutM("10"),i),oum(getIndexOfIOutM("10.1"),i),"2.2:3")+inm(getIndexOfIInM("46"),i)/.7/inm(getIndexOfIInM("1"),i),1/0))))'                                      &&13 G o
+'IIF(inm(getIndexOfIInM("74"),i)=="3",F3(oum(getIndexOfIOutM("9"),i),oum(getIndexOfIOutM("10"),i),oum(getIndexOfIOutM("10.1"),i),"2.2:3")+inm(getIndexOfIInM("46"),i)/.7/inm(getIndexOfIInM("1"),i),1/0))))'
+&&13 G o
 
+&&14 G 2
 DO CIKL WITH getIndexOfIOutM("14"),'IIF(inm(getIndexOfIInM("74"),i)=="1",F1(oum(getIndexOfIOutM("13"),i),"2.3:1")-inm(getIndexOfIInM("46"),i)/.7/inm(getIndexOfIInM("1"),i),'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="2" OR inm(getIndexOfIInM("74"),i)=="3",F3(oum(getIndexOfIOutM("13"),i),oum(getIndexOfIOutM("10"),i),oum(getIndexOfIOutM("10.1"),i),"2.3б:3")-inm(getIndexOfIInM("46"),i)/.7/inm(getIndexOfIInM("1"),i),'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="2а",F3(oum(getIndexOfIOutM("13"),i),oum(getIndexOfIOutM("10"),i),inm(getIndexOfIInM("38"),i),"2.3а:3")-inm(getIndexOfIInM("46"),i)/.7/inm(getIndexOfIInM("1"),i),1/0)))'                                      &&14 G 2
-DO CIKL WITH getIndexOfIOutM("14"),'IIF(oum(getIndexOfIOutM("14"),i)<0,0,oum(getIndexOfIOutM("14"),i))'                  &&14 G 2
-oum(getIndexOfIOutM("14"),n_blokov+1)=CIKL1(getIndexOfIOutM("14"),IIF(BL1 OR BL4 OR BL5 OR BL6,SUM('oum(getIndexOfIOutM("14"),')*n_blokov1,SUM('oum(getIndexOfIOutM("14"),')))                                                          &&14 G 2
+DO CIKL WITH getIndexOfIOutM("14"),'IIF(oum(getIndexOfIOutM("14"),i)<0,0,oum(getIndexOfIOutM("14"),i))'
+oum(getIndexOfIOutM("14"),n_blokov+1)=CIKL1(getIndexOfIOutM("14"),IIF(BL1 OR BL4 OR BL5 OR BL6,SUM('oum(getIndexOfIOutM("14"),')*n_blokov1,SUM('oum(getIndexOfIOutM("14"),')))
+&&14 G 2
+
+&&14.1 G цв
 oum(getIndexOfIOutM("14.1"),n_blokov+1)=CIKL1(getIndexOfIOutM("14.1"),IIF(inm(getIndexOfIInM("70"),n_blokov+1)=0,0,F2(IIF(BL1 OR BL4 OR BL5 OR BL6,n_blokov1,inm(getIndexOfIInM("89"),n_blokov+1)),;
-ROUND(inm(getIndexOfIInM("6"),n_blokov+1)/inm(getIndexOfIInM("70"),n_blokov+1)/1.9,1),"2.4а:2")))        &&14.1 G цв
+ROUND(inm(getIndexOfIInM("6"),n_blokov+1)/inm(getIndexOfIInM("70"),n_blokov+1)/1.9,1),"2.4а:2")))
+&&14.1 G цв
 
+&&15 – 2(н)
 DO CIKL WITH getIndexOfIOutM("15"),'F3(oum(getIndexOfIOutM("14"),i),inm(getIndexOfIInM("28"),i),oum(getIndexOfIOutM("14.1"),n_blokov+1),"2.4:3")'
-                                                                               &&15 – 2(н)
-DO CIKL WITH getIndexOfIOutM("15.1"),'F2(oum(getIndexOfIOutM("15"),i),oum(getIndexOfIOutM("14"),i),"2.84:2")'            &&15.1 dQ э(P2)
+&&15 – 2(н)
 
-DO CIKL WITH getIndexOfIOutM("16"),'1E3*oum(getIndexOfIOutM("15.1"),i)/oum(getIndexOfIOutM("9"),i)'                      &&16 dqт бр(P2)
+&&15.1 dQ э(P2)
+DO CIKL WITH getIndexOfIOutM("15.1"),'F2(oum(getIndexOfIOutM("15"),i),oum(getIndexOfIOutM("14"),i),"2.84:2")'
+&&15.1 dQ э(P2)
 
+&&16 dqт бр(P2)
+DO CIKL WITH getIndexOfIOutM("16"),'1E3*oum(getIndexOfIOutM("15.1"),i)/oum(getIndexOfIOutM("9"),i)'
+&&16 dqт бр(P2)
+
+&&17 dqт бр(Qпп)
 DO CIKL WITH getIndexOfIOutM("17"),'IIF(inm(getIndexOfIInM("74"),i)=="1",F1(oum(getIndexOfIOutM("13"),i),"2.5а:1")*oum(getIndexOfIOutM("11"),i),'+;
-'IIF(inm(getIndexOfIInM("74"),i)=="2" OR inm(getIndexOfIInM("74"),i)=="2а" OR inm(getIndexOfIInM("74"),i)=="3",F2(oum(getIndexOfIOutM("13"),i),oum(getIndexOfIOutM("10"),i),"2.5:2")*oum(getIndexOfIOutM("11"),i),1/0))'               &&17 dqт бр(Qпп)
+'IIF(inm(getIndexOfIInM("74"),i)=="2" OR inm(getIndexOfIInM("74"),i)=="2а" OR inm(getIndexOfIInM("74"),i)=="3",F2(oum(getIndexOfIOutM("13"),i),oum(getIndexOfIOutM("10"),i),"2.5:2")*oum(getIndexOfIOutM("11"),i),1/0))'
+&&17 dqт бр(Qпп)
 
+&&18 t 2(н)
 DO CIKL WITH getIndexOfIOutM("18"),'IIF(inm(getIndexOfIInM("74"),i)=="1",1/0,'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="2",F1(oum(getIndexOfIOutM("10.1"),i),"2.6:1"),'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="2а",F1(inm(getIndexOfIInM("38"),i),"2.89:1"),'+;
-'IIF(inm(getIndexOfIInM("74"),i)=="3",F1(oum(getIndexOfIOutM("10.1"),i),"2.6:1"),1/0))))'                 &&18 t 2(н)
+'IIF(inm(getIndexOfIInM("74"),i)=="3",F1(oum(getIndexOfIOutM("10.1"),i),"2.6:1"),1/0))))'
+&&18 t 2(н)
 
-DO CIKL WITH getIndexOfIOutM("19"),'inm(getIndexOfIInM("49"),i)-oum(getIndexOfIOutM("18"),i)'                           &&19 dt 2
+&&19 dt 2
+DO CIKL WITH getIndexOfIOutM("19"),'inm(getIndexOfIInM("49"),i)-oum(getIndexOfIOutM("18"),i)'
+&&19 dt 2
 
-DO CIKL WITH getIndexOfIOutM("20"),'IIF(inm(getIndexOfIInM("74"),i)=="1" OR inm(getIndexOfIInM("74"),i)=="2а",0,1/0)'  &&20 dqт бр(t 2)   
+&&20 dqт бр(t 2)
+DO CIKL WITH getIndexOfIOutM("20"),'IIF(inm(getIndexOfIInM("74"),i)=="1" OR inm(getIndexOfIInM("74"),i)=="2а",0,1/0)'
+&&20 dqт бр(t 2)
 
-PUBLIC o20_1(n_blokov),o20_2(n_blokov)                                         && дл€ 4-мерного(!!!) графика
+&& дл€ 4-мерного(!!!) графика
+PUBLIC o20_1(n_blokov),o20_2(n_blokov)
+&&20 dqт бр(t 2)
 DO CIKL WITH getIndexOfIOutM("20"),'IIF(inm(getIndexOfIInM("74"),i)=="2" OR inm(getIndexOfIInM("74"),i)=="3",'+;
 'F3(oum(getIndexOfIOutM("13"),i),oum(getIndexOfIOutM("10"),i),oum(getIndexOfIOutM("19"),i),'+;
 '"2.7"+IIF(oum(getIndexOfIOutM("10.1"),i)<0.8,"",IIF(BETWEEN(oum(getIndexOfIOutM("10.1"),i),0.8,0.99),"",IIF(BETWEEN(oum(getIndexOfIOutM("10.1"),i),1,1.19),"а",'+;
 'IIF(BETWEEN(oum(getIndexOfIOutM("10.1"),i),1.2,1.39),"б",IIF(BETWEEN(oum(getIndexOfIOutM("10.1"),i),1.4,1.59),"в",'+;
 'IIF(BETWEEN(oum(getIndexOfIOutM("10.1"),i),1.6,1.79),"г",IIF(oum(getIndexOfIOutM("10.1"),i)>=1.8,"д","")))))))'+;
-'+IIF(oum(getIndexOfIOutM("19"),i)<0,"-","+")+":3"),oum(getIndexOfIOutM("20"),i))'                         &&20 dqт бр(t 2)   
+'+IIF(oum(getIndexOfIOutM("19"),i)<0,"-","+")+":3"),oum(getIndexOfIOutM("20"),i))'
 FOR i=1 TO n_blokov
   o20_1(i)=oum(getIndexOfIOutM("20"),i)
 ENDFOR
@@ -145,10 +197,13 @@ DO CIKL WITH getIndexOfIOutM("20"),'IIF(inm(getIndexOfIInM("74"),i)=="2" OR inm(
 'IIF(BETWEEN(oum(getIndexOfIOutM("10.1"),i),1,1.19),"б",IIF(BETWEEN(oum(getIndexOfIOutM("10.1"),i),1.2,1.39),"в",'+;
 'IIF(BETWEEN(oum(getIndexOfIOutM("10.1"),i),1.4,1.59),"г",IIF(BETWEEN(oum(getIndexOfIOutM("10.1"),i),1.6,1.79),"д",'+;
 'IIF(oum(getIndexOfIOutM("10.1"),i)>=1.8,"е","")))))))'+;
-'+IIF(oum(getIndexOfIOutM("19"),i)<0,"-","+")+":3"),oum(getIndexOfIOutM("20"),i))'                         &&20 dqт бр(t 2)   
+'+IIF(oum(getIndexOfIOutM("19"),i)<0,"-","+")+":3"),oum(getIndexOfIOutM("20"),i))'
+&&20 dqт бр(t 2)
+
 FOR i=1 TO n_blokov
   o20_2(i)=oum(getIndexOfIOutM("20"),i)
 ENDFOR
+
 *wait wind str(o20_1(n_blokov),10,2)+" | "+str(o20_2(n_blokov),10,2)
 DO CIKL WITH getIndexOfIOutM("20"),'IIF(inm(getIndexOfIInM("74"),i)=="2" OR inm(getIndexOfIInM("74"),i)=="3",'+;
 'IIF(oum(getIndexOfIOutM("10.1"),i)<0.8,o20_1(i),'+;
@@ -158,142 +213,194 @@ DO CIKL WITH getIndexOfIOutM("20"),'IIF(inm(getIndexOfIInM("74"),i)=="2" OR inm(
 'IIF(BETWEEN(oum(getIndexOfIOutM("10.1"),i),1.4,1.59),(o20_1(i)*(1.59-oum(getIndexOfIOutM("10.1"),i))+o20_2(i)*(oum(getIndexOfIOutM("10.1"),i)-1.4))/0.19,'+;
 'IIF(BETWEEN(oum(getIndexOfIOutM("10.1"),i),1.6,1.79),(o20_1(i)*(1.79-oum(getIndexOfIOutM("10.1"),i))+o20_2(i)*(oum(getIndexOfIOutM("10.1"),i)-1.6))/0.19,'+;
 'IIF(BETWEEN(oum(getIndexOfIOutM("10.1"),i),1.8,1.99),(o20_1(i)*(1.99-oum(getIndexOfIOutM("10.1"),i))+o20_2(i)*(oum(getIndexOfIOutM("10.1"),i)-1.8))/0.19,'+;
-'o20_2(i) ))))))),oum(getIndexOfIOutM("20"),i))'                                             &&20 dqт бр(t 2)   
-RELEASE o20_1,o20_2                                                            && дл€ 4-мерного(!!!) графика
-DO CIKL WITH getIndexOfIOutM("20"),'IIF(oum(getIndexOfIOutM("19"),i)=0,0,oum(getIndexOfIOutM("20"),i))'                  &&20 dqт бр(t 2) 
+'o20_2(i) ))))))),oum(getIndexOfIOutM("20"),i))'
+&&20 dqт бр(t 2)
 
+&& дл€ 4-мерного(!!!) графика
+RELEASE o20_1,o20_2
+
+&&20 dqт бр(t 2)
+DO CIKL WITH getIndexOfIOutM("20"),'IIF(oum(getIndexOfIOutM("19"),i)=0,0,oum(getIndexOfIOutM("20"),i))'
+
+&&21 dqт бр(Gпв)
 DO CIKL WITH getIndexOfIOutM("21"),'IIF(inm(getIndexOfIInM("25"),i)/oum(getIndexOfIOutM("1"),i)=oum(getIndexOfIOutM("13"),i),0,'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="1",F1(oum(getIndexOfIOutM("13"),i),"2.8"+'+;
 'IIF(inm(getIndexOfIInM("25"),i)/oum(getIndexOfIOutM("1"),i)>oum(getIndexOfIOutM("13"),i),"-","+")+":1"),'+;
 'IIF( inm(getIndexOfIInM("74"),i)=="2" OR inm(getIndexOfIInM("74"),i)=="2а" OR inm(getIndexOfIInM("74"),i)=="3",F2(oum(getIndexOfIOutM("13"),i),oum(getIndexOfIOutM("10"),i),"2.8а"+'+;
-'IIF(inm(getIndexOfIInM("25"),i)/oum(getIndexOfIOutM("1"),i)>oum(getIndexOfIOutM("13"),i),"-","+")+":2"),1/0)))'        &&21 dqт бр(Gпв)
-*O ALTERC WITH getIndexOfIOutM("22"),1,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*'+;
-'(inm(getIndexOfIInM("72"),i)-57135)/1E5,0)'                                                &&22 dqт бр(рес)
-*O ALTERC WITH getIndexOfIOutM("22"),2,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*'+;
-'(inm(getIndexOfIInM("72"),i)-53904)/1E5,0)'                                                &&22 dqт бр(рес)
-*O ALTERC WITH getIndexOfIOutM("22"),3,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*'+;
-'(inm(getIndexOfIInM("72"),i)-44557)/1E5,0)'                                                &&22 dqт бр(рес)
-*O ALTERC WITH getIndexOfIOutM("22"),4,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*'+;
-'(inm(getIndexOfIInM("72"),i)-35717)/1E5,0)'                                                &&22 dqт бр(рес)
-*O ALTERC WITH getIndexOfIOutM("22"),5,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*'+;
-'(inm(getIndexOfIInM("72"),i)-14771)/1E5,0)'                                                &&22 dqт бр(рес)
-*O ALTERC WITH getIndexOfIOutM("22"),6,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*'+;
-'(inm(getIndexOfIInM("72"),i)-0)/1E5,0)'                                                    &&22 dqт бр(рес)
-DO ALTERC WITH getIndexOfIOutM("22"),1,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35000)/1E5,0)'                                                &&22 dqт бр(рес)
-DO ALTERC WITH getIndexOfIOutM("22"),2,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35000)/1E5,0)'                                                &&22 dqт бр(рес)
-DO ALTERC WITH getIndexOfIOutM("22"),3,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35000)/1E5,0)'                                                &&22 dqт бр(рес)
-DO ALTERC WITH getIndexOfIOutM("22"),4,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35000)/1E5,0)'                                                &&22 dqт бр(рес)
-DO ALTERC WITH getIndexOfIOutM("22"),5,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35000)/1E5,0)'                                                &&22 dqт бр(рес)
-DO ALTERC WITH getIndexOfIOutM("22"),6,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35000)/1E5,0)'                                                    &&22 dqт бр(рес)
+'IIF(inm(getIndexOfIInM("25"),i)/oum(getIndexOfIOutM("1"),i)>oum(getIndexOfIOutM("13"),i),"-","+")+":2"),1/0)))'
+&&21 dqт бр(Gпв)
 
-DO CIKL WITH getIndexOfIOutM("23"),'182.3*inm(getIndexOfIInM("69"),i)*1E3/oum(getIndexOfIOutM("2"),i)'                  &&23 dqт бр(пуск)
+&&22 dqт бр(рес)
+*O ALTERC WITH getIndexOfIOutM("22"),1,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-57135)/1E5,0)'
+&&22 dqт бр(рес)
+*O ALTERC WITH getIndexOfIOutM("22"),2,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-53904)/1E5,0)'
+&&22 dqт бр(рес)
+*O ALTERC WITH getIndexOfIOutM("22"),3,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-44557)/1E5,0)'
+&&22 dqт бр(рес)
+*O ALTERC WITH getIndexOfIOutM("22"),4,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35717)/1E5,0)'
+&&22 dqт бр(рес)
+*O ALTERC WITH getIndexOfIOutM("22"),5,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-14771)/1E5,0)'
+&&22 dqт бр(рес)
+*O ALTERC WITH getIndexOfIOutM("22"),6,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-0)/1E5,0)'
 
-DO CIKL WITH getIndexOfIOutM("24"),'oum(getIndexOfIOutM("12"),i)+oum(getIndexOfIOutM("16"),i)+oum(getIndexOfIOutM("17"),i)+oum(getIndexOfIOutM("20"),i)+oum(getIndexOfIOutM("21"),i)+oum(getIndexOfIOutM("22"),i)+oum(getIndexOfIOutM("23"),i)'                                 &&24 qт бр(ном)
+&&22 dqт бр(рес)
+DO ALTERC WITH getIndexOfIOutM("22"),1,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35000)/1E5,0)'
+&&22 dqт бр(рес)
+DO ALTERC WITH getIndexOfIOutM("22"),2,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35000)/1E5,0)'
+&&22 dqт бр(рес)
+DO ALTERC WITH getIndexOfIOutM("22"),3,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35000)/1E5,0)'
+&&22 dqт бр(рес)
+DO ALTERC WITH getIndexOfIOutM("22"),4,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35000)/1E5,0)'
+&&22 dqт бр(рес)
+DO ALTERC WITH getIndexOfIOutM("22"),5,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35000)/1E5,0)'
+&&22 dqт бр(рес)
+DO ALTERC WITH getIndexOfIOutM("22"),6,'IIF(inm(getIndexOfIInM("72"),i)>35000,oum(getIndexOfIOutM("12"),i)*.0085*(inm(getIndexOfIInM("72"),i)-35000)/1E5,0)'
+
+&&23 dqт бр(пуск)
+DO CIKL WITH getIndexOfIOutM("23"),'182.3*inm(getIndexOfIInM("69"),i)*1E3/oum(getIndexOfIOutM("2"),i)'
+
+&&24 qт бр(ном)
+DO CIKL WITH getIndexOfIOutM("24"),'oum(getIndexOfIOutM("12"),i)+oum(getIndexOfIOutM("16"),i)+oum(getIndexOfIOutM("17"),i)+oum(getIndexOfIOutM("20"),i)+oum(getIndexOfIOutM("21"),i)+oum(getIndexOfIOutM("22"),i)+oum(getIndexOfIOutM("23"),i)'
 sum=0
 FOR i=1 TO n_blokov
   sum=sum+oum(getIndexOfIOutM("24"),i)*oum(getIndexOfIOutM("2"),i)
 ENDFOR
-oum(getIndexOfIOutM("24"),n_blokov+1)=CIKL1(getIndexOfIOutM("24"),sum/oum(getIndexOfIOutM("2"),n_blokov+1))              &&24 qт бр(ном)
+oum(getIndexOfIOutM("24"),n_blokov+1)=CIKL1(getIndexOfIOutM("24"),sum/oum(getIndexOfIOutM("2"),n_blokov+1))
+&&24 qт бр(ном)
 
 DO CIKL WITH getIndexOfIOutM("25"),'IIF(inm(getIndexOfIInM("74"),i)=="1",0,'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="2",F2(oum(getIndexOfIOutM("13"),i),oum(getIndexOfIOutM("10.1"),i),"2.9:2"),'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="2а",F2(oum(getIndexOfIOutM("13"),i),inm(getIndexOfIInM("38"),i),"2.9а:2"),'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="3",F2(oum(getIndexOfIOutM("13"),i),inm(getIndexOfIInM("38"),i),"2.9б:2"),1/0))))'   &&25 W т/тф(ном)
-*DO CIKL WITH getIndexOfIOutM("49"),'(inm(getIndexOfIInM("17"),i)+inm(getIndexOfIInM("17.1"),i))/2-'+;
-'F1((inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i))/inm(getIndexOfIInM("1"),i),"2.22:1")+273.15',.F.        &&49 D пе
+
+&&49 D пе
+*DO CIKL WITH getIndexOfIOutM("49"),'(inm(getIndexOfIInM("17"),i)+inm(getIndexOfIInM("17.1"),i))/2-F1((inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i))/inm(getIndexOfIInM("1"),i),"2.22:1")+273.15',.F.
 *DO CIKL WITH getIndexOfIOutM("49"),'(inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i))*SQRT(.02526/(4.7061/1E2*'+;
 '(oum(getIndexOfIOutM("49"),i)/1000)/((inm(getIndexOfIInM("15.2"),i)+F1((inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i))/oum(getIndexOfIOutM("1"),i),'+;
 '"2.41:1"))/100)+.32371/1E3+2.5/1E4*(oum(getIndexOfIOutM("49"),i)/1000)-'+;
 '1.1354/1E3/(oum(getIndexOfIOutM("49"),i)/1000)^2-4.381/1E4/((oum(getIndexOfIOutM("49"),i)/1000)-.21)^2-(2.549/1E5/'+;
 '(oum(getIndexOfIOutM("49"),i)/1000)^8+1.236/1E7/(oum(getIndexOfIOutM("49"),i)/1000)^14-5.5/1E5)*((inm(getIndexOfIInM("15.2"),i)+'+;
-'F1((inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i))/oum(getIndexOfIOutM("1"),i),"2.41:1"))/100)))'           &&49 D пе
-*DO ALTERC WITH getIndexOfIOutM("49"),1,'inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i)'                       &&49 D пе
-*DO ALTERC WITH getIndexOfIOutM("49"),4,'inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i)'                       &&49 D пе
-*DO ALTERC WITH getIndexOfIOutM("49"),5,'inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i)'                       &&49 D пе
-DO CIKL WITH getIndexOfIOutM("49"),'inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i)'                           &&49 D пе
-oum(getIndexOfIOutM("49"),n_blokov+1)=CIKL1(getIndexOfIOutM("49"),SUM('oum(getIndexOfIOutM("49"),'))                     &&49 D пе
-DO CIKL WITH getIndexOfIOutM("50"),'oum(getIndexOfIOutM("49"),i)/oum(getIndexOfIOutM("1"),i)'                            &&50 D пе
+'F1((inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i))/oum(getIndexOfIOutM("1"),i),"2.41:1"))/100)))'
+&&49 D пе
+
+&&49 D пе
+*DO ALTERC WITH getIndexOfIOutM("49"),1,'inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i)'
+*DO ALTERC WITH getIndexOfIOutM("49"),4,'inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i)'
+*DO ALTERC WITH getIndexOfIOutM("49"),5,'inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i)'
+&&49 D пе
+
+&&49 D пе
+DO CIKL WITH getIndexOfIOutM("49"),'inm(getIndexOfIInM("13"),i)+inm(getIndexOfIInM("14"),i)'
+oum(getIndexOfIOutM("49"),n_blokov+1)=CIKL1(getIndexOfIOutM("49"),SUM('oum(getIndexOfIOutM("49"),'))
+&&49 D пе
+
+&&50 D пе
+DO CIKL WITH getIndexOfIOutM("50"),'oum(getIndexOfIOutM("49"),i)/oum(getIndexOfIOutM("1"),i)'
 oum(getIndexOfIOutM("50"),n_blokov+1)=CIKL1(getIndexOfIOutM("50"),oum(getIndexOfIOutM("49"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1))&&50 D пе
-DO CIKL WITH getIndexOfIOutM("51"),'(inm(getIndexOfIInM("17"),i)+inm(getIndexOfIInM("17.1"),i))/2'                     &&51 t пе
-DO ALTERC WITH getIndexOfIOutM("51"),5,'(inm(getIndexOfIInM("18"),i)+inm(getIndexOfIInM("18.1"),i))/2+'+;
-'F1(oum(getIndexOfIOutM("50"),i),"2.22:1")'                                                  &&51 t пе
+
+&&51 t пе
+DO CIKL WITH getIndexOfIOutM("51"),'(inm(getIndexOfIInM("17"),i)+inm(getIndexOfIInM("17.1"),i))/2'
+DO ALTERC WITH getIndexOfIOutM("51"),5,'(inm(getIndexOfIInM("18"),i)+inm(getIndexOfIInM("18.1"),i))/2+F1(oum(getIndexOfIOutM("50"),i),"2.22:1")'
 DO CIKL WITH getIndexOfIOutM("51.1"),'(inm(getIndexOfIInM("17"),i)+inm(getIndexOfIInM("17.1"),i))/2-F1(oum(getIndexOfIOutM("50"),i),"2.22:1")'&&51.1 t oп
 DO ALTERC WITH getIndexOfIOutM("51.1"),1,'(inm(getIndexOfIInM("18"),i)+inm(getIndexOfIInM("18.1"),i))/2'               &&51.1 t oп
 DO ALTERC WITH getIndexOfIOutM("51.1"),4,'(inm(getIndexOfIInM("18"),i)+inm(getIndexOfIInM("18.1"),i))/2'               &&51.1 t oп
 DO ALTERC WITH getIndexOfIOutM("51.1"),5,'(inm(getIndexOfIInM("18"),i)+inm(getIndexOfIInM("18.1"),i))/2'               &&51.1 t oп
 DO ALTERC WITH getIndexOfIOutM("51.1"),6,'(inm(getIndexOfIInM("18"),i)+inm(getIndexOfIInM("18.1"),i))/2'               &&51.1 t oп
+
+&&54 D хпп
 DO CIKL WITH getIndexOfIOutM("54"),'IIF(inm(getIndexOfIInM("74"),i)=="1",F1(oum(getIndexOfIOutM("50"),i),"2.24а:1"),'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="2" OR inm(getIndexOfIInM("74"),i)=="3",F1(oum(getIndexOfIOutM("50"),i),"2.24:1"),'+;
-'IIF(inm(getIndexOfIInM("74"),i)=="2а",F1(oum(getIndexOfIOutM("50"),i),"2.24б:1"),1/0)))'                 &&54 D хпп
-DO CIKL WITH getIndexOfIOutM("55"),'oum(getIndexOfIOutM("54"),i)*oum(getIndexOfIOutM("1"),i)-inm(getIndexOfIInM("46"),i)/.7'          &&55 D гпп
-DO CIKL WITH getIndexOfIOutM("52"),'(inm(getIndexOfIInM("21"),i)+inm(getIndexOfIInM("21.1"),i))/2'                     &&52 t гпп
-DO ALTERC WITH getIndexOfIOutM("52"),5,'(inm(getIndexOfIInM("22"),i)+inm(getIndexOfIInM("22.1"),i))/2+F1(oum(getIndexOfIOutM("55"),i)/oum(getIndexOfIOutM("1"),i),"2.22б:1")'                                   &&52 t гпп
-DO CIKL WITH getIndexOfIOutM("52.1"),'(inm(getIndexOfIInM("21"),i)+inm(getIndexOfIInM("21.1"),i))/2-F1(oum(getIndexOfIOutM("55"),i)/oum(getIndexOfIOutM("1"),i),"2.22б:1")'                                   &&52.1 t гпп
-DO ALTERC WITH getIndexOfIOutM("52.1"),1,'(inm(getIndexOfIInM("22"),i)+inm(getIndexOfIInM("22.1"),i))/2'               &&52.1 t гпп
-DO ALTERC WITH getIndexOfIOutM("52.1"),4,'(inm(getIndexOfIInM("22"),i)+inm(getIndexOfIInM("22.1"),i))/2'               &&52.1 t гпп
-DO ALTERC WITH getIndexOfIOutM("52.1"),5,'(inm(getIndexOfIInM("22"),i)+inm(getIndexOfIInM("22.1"),i))/2'               &&52.1 t гпп
-DO ALTERC WITH getIndexOfIOutM("52.1"),6,'(inm(getIndexOfIInM("22"),i)+inm(getIndexOfIInM("22.1"),i))/2'               &&52.1 t гпп
+'IIF(inm(getIndexOfIInM("74"),i)=="2а",F1(oum(getIndexOfIOutM("50"),i),"2.24б:1"),1/0)))'
 
-DO CIKL WITH getIndexOfIOutM("53"),'inm(getIndexOfIInM("19"),i)'                                          &&53 P гпп
+&&55 D гпп
+DO CIKL WITH getIndexOfIOutM("55"),'oum(getIndexOfIOutM("54"),i)*oum(getIndexOfIOutM("1"),i)-inm(getIndexOfIInM("46"),i)/.7'
 
-DO CIKL WITH getIndexOfIOutM("56"),'(inm(getIndexOfIInM("15"),i)+inm(getIndexOfIInM("15.1"),i))/2+F1(oum(getIndexOfIOutM("50"),i),"2.41а:1")'                                                 &&56 P пе
+&&52 t гпп
+DO CIKL WITH getIndexOfIOutM("52"),'(inm(getIndexOfIInM("21"),i)+inm(getIndexOfIInM("21.1"),i))/2'
 
-DO ALTERC WITH getIndexOfIOutM("56"),4,'(inm(getIndexOfIInM("15"),i)+inm(getIndexOfIInM("15.1"),i))/2'                 &&56 P пе
+&&52 t гпп
+DO ALTERC WITH getIndexOfIOutM("52"),5,'(inm(getIndexOfIInM("22"),i)+inm(getIndexOfIInM("22.1"),i))/2+F1(oum(getIndexOfIOutM("55"),i)/oum(getIndexOfIOutM("1"),i),"2.22б:1")'
 
-DO ALTERC WITH getIndexOfIOutM("56"),6,'(inm(getIndexOfIInM("15"),i)+inm(getIndexOfIInM("15.1"),i))/2'                 &&56 P пе
+&&52.1 t гпп
+DO CIKL WITH getIndexOfIOutM("52.1"),'(inm(getIndexOfIInM("21"),i)+inm(getIndexOfIInM("21.1"),i))/2-F1(oum(getIndexOfIOutM("55"),i)/oum(getIndexOfIOutM("1"),i),"2.22б:1")'
+DO ALTERC WITH getIndexOfIOutM("52.1"),1,'(inm(getIndexOfIInM("22"),i)+inm(getIndexOfIInM("22.1"),i))/2'
+DO ALTERC WITH getIndexOfIOutM("52.1"),4,'(inm(getIndexOfIInM("22"),i)+inm(getIndexOfIInM("22.1"),i))/2'
+DO ALTERC WITH getIndexOfIOutM("52.1"),5,'(inm(getIndexOfIInM("22"),i)+inm(getIndexOfIInM("22.1"),i))/2'
+DO ALTERC WITH getIndexOfIOutM("52.1"),6,'(inm(getIndexOfIInM("22"),i)+inm(getIndexOfIInM("22.1"),i))/2'
+&&52.1 t гпп
+
+&&53 P гпп
+DO CIKL WITH getIndexOfIOutM("53"),'inm(getIndexOfIInM("19"),i)'
+
+&&56 P пе
+DO CIKL WITH getIndexOfIOutM("56"),'(inm(getIndexOfIInM("15"),i)+inm(getIndexOfIInM("15.1"),i))/2+F1(oum(getIndexOfIOutM("50"),i),"2.41а:1")'
+
+&&56 P пе
+DO ALTERC WITH getIndexOfIOutM("56"),4,'(inm(getIndexOfIInM("15"),i)+inm(getIndexOfIInM("15.1"),i))/2'
+
+&&56 P пе
+DO ALTERC WITH getIndexOfIOutM("56"),6,'(inm(getIndexOfIInM("15"),i)+inm(getIndexOfIInM("15.1"),i))/2'
 
 DO CIKL WITH getIndexOfIOutM("56.1"),'inm(getIndexOfIInM("15.2"),i)'                                      &&56.1 Pо
 *O ALTERC WITH getIndexOfIOutM("56.1"),5,'(inm(getIndexOfIInM("15"),i)+inm(getIndexOfIInM("15.1"),i))/2-F1(oum(getIndexOfIOutM("50"),i),"2.41:1")'&&56.1 Pо
 
+&&57 i пе
 DO CIKL WITH getIndexOfIOutM("57"),'503.43+11.02849*LOG((oum(getIndexOfIOutM("51"),i)+273.15)/647.27)+'+;
 '229.2569*(oum(getIndexOfIOutM("51"),i)+273.15)/647.27+37.93129*((oum(getIndexOfIOutM("51"),i)+273.15)/647.27)**2+'+;
 '(0.758195-7.97826/((oum(getIndexOfIOutM("51"),i)+273.15)/1000)**2-(3.078455*'+;
 '(oum(getIndexOfIOutM("51"),i)+273.15)/1000-.21549)/((oum(getIndexOfIOutM("51"),i)+273.15)/1000-.21)**3)*'+;
 'oum(getIndexOfIOutM("56"),i)/100+(.0644126-.268671/((oum(getIndexOfIOutM("51"),i)+273.15)/1000)**8-'+;
-'.216661/100/((oum(getIndexOfIOutM("51"),i)+273.15)/1000)**14)*(oum(getIndexOfIOutM("56"),i)/100)**2'      &&57 i пе
+'.216661/100/((oum(getIndexOfIOutM("51"),i)+273.15)/1000)**14)*(oum(getIndexOfIOutM("56"),i)/100)**2'
 
+&&57.1 i оп
 DO CIKL WITH getIndexOfIOutM("57.1"),'503.43+11.02849*LOG((oum(getIndexOfIOutM("51.1"),i)+273.15)/647.27)+'+;
 '229.2569*(oum(getIndexOfIOutM("51.1"),i)+273.15)/647.27+37.93129*((oum(getIndexOfIOutM("51.1"),i)+273.15)/647.27)**2+'+;
 '(0.758195-7.97826/((oum(getIndexOfIOutM("51.1"),i)+273.15)/1000)**2-(3.078455*'+;
 '(oum(getIndexOfIOutM("51.1"),i)+273.15)/1000-.21549)/((oum(getIndexOfIOutM("51.1"),i)+273.15)/1000-.21)**3)*'+;
 'oum(getIndexOfIOutM("56.1"),i)/100+(.0644126-.268671/((oum(getIndexOfIOutM("51.1"),i)+273.15)/1000)**8-'+;
-'.216661/100/((oum(getIndexOfIOutM("51.1"),i)+273.15)/1000)**14)*(oum(getIndexOfIOutM("56.1"),i)/100)**2'  &&57.1 i оп
+'.216661/100/((oum(getIndexOfIOutM("51.1"),i)+273.15)/1000)**14)*(oum(getIndexOfIOutM("56.1"),i)/100)**2'
 
+&&58 i пв
 DO CIKL WITH getIndexOfIOutM("58"),'(49.4+402.5*inm(getIndexOfIInM("26"),i)/100+4.767*(inm(getIndexOfIInM("26"),i)/100)**2+'+;
 '.0333*(inm(getIndexOfIInM("26"),i)/100)**6+(-9.25+1.67*inm(getIndexOfIInM("26"),i)/100+.00736*'+;
 '(inm(getIndexOfIInM("26"),i)/100)**6-.008*(1/(inm(getIndexOfIInM("26"),i)/100+.5))**5)*(50-inm(getIndexOfIInM("16"),i)*'+;
 '.0980665)/10+(-.073+.079*inm(getIndexOfIInM("26"),i)/100+.00068*(inm(getIndexOfIInM("26"),i)/100)**6)*'+;
 '((50-inm(getIndexOfIInM("16"),i)*.0980665)/10)**2+3.39/1E8*(inm(getIndexOfIInM("26"),i)/100)**12*'+;
-'((50-inm(getIndexOfIInM("16"),i)*.0980665)/10)**4)/4.1868'                                 &&58 i пв
+'((50-inm(getIndexOfIInM("16"),i)*.0980665)/10)**4)/4.1868'
 
+&&59 i гпп к
 DO CIKL WITH getIndexOfIOutM("59"),'503.43+11.02849*LOG((oum(getIndexOfIOutM("52"),i)+273.15)/647.27)+'+;
 '229.2569*(oum(getIndexOfIOutM("52"),i)+273.15)/647.27+37.93129*((oum(getIndexOfIOutM("52"),i)+273.15)/647.27)**2+'+;
 '(0.758195-7.97826/((oum(getIndexOfIOutM("52"),i)+273.15)/1000)**2-(3.078455*'+;
 '(oum(getIndexOfIOutM("52"),i)+273.15)/1000-.21549)/((oum(getIndexOfIOutM("52"),i)+273.15)/1000-.21)**3)*'+;
 'oum(getIndexOfIOutM("53"),i)/100+(.0644126-.268671/((oum(getIndexOfIOutM("52"),i)+273.15)/1000)**8-'+;
-'.216661/100/((oum(getIndexOfIOutM("52"),i)+273.15)/1000)**14)*(oum(getIndexOfIOutM("53"),i)/100)**2'      &&59 i гпп к
+'.216661/100/((oum(getIndexOfIOutM("52"),i)+273.15)/1000)**14)*(oum(getIndexOfIOutM("53"),i)/100)**2'
 
+&&59 i гпп т
 DO CIKL WITH getIndexOfIOutM("59.1"),'503.43+11.02849*LOG((oum(getIndexOfIOutM("52.1"),i)+273.15)/647.27)+'+;
 '229.2569*(oum(getIndexOfIOutM("52.1"),i)+273.15)/647.27+37.93129*((oum(getIndexOfIOutM("52.1"),i)+273.15)/647.27)**2+'+;
 '(0.758195-7.97826/((oum(getIndexOfIOutM("52.1"),i)+273.15)/1000)**2-(3.078455*'+;
 '(oum(getIndexOfIOutM("52.1"),i)+273.15)/1000-.21549)/((oum(getIndexOfIOutM("52.1"),i)+273.15)/1000-.21)**3)*'+;
 'oum(getIndexOfIOutM("53"),i)/100+(.0644126-.268671/((oum(getIndexOfIOutM("52.1"),i)+273.15)/1000)**8-'+;
-'.216661/100/((oum(getIndexOfIOutM("52.1"),i)+273.15)/1000)**14)*(oum(getIndexOfIOutM("53"),i)/100)**2'    &&59 i гпп т
+'.216661/100/((oum(getIndexOfIOutM("52.1"),i)+273.15)/1000)**14)*(oum(getIndexOfIOutM("53"),i)/100)**2'
 
+&&60 i хпп
 DO CIKL WITH getIndexOfIOutM("60"),'503.43+11.02849*LOG((inm(getIndexOfIInM("24"),i)+273.15)/647.27)+'+;
 '229.2569*(inm(getIndexOfIInM("24"),i)+273.15)/647.27+37.93129*((inm(getIndexOfIInM("24"),i)+273.15)/647.27)**2+'+;
 '(0.758195-7.97826/((inm(getIndexOfIInM("24"),i)+273.15)/1000)**2-(3.078455*'+;
 '(inm(getIndexOfIInM("24"),i)+273.15)/1000-.21549)/((inm(getIndexOfIInM("24"),i)+273.15)/1000-.21)**3)*'+;
 'inm(getIndexOfIInM("23"),i)/100+(.0644126-.268671/((inm(getIndexOfIInM("24"),i)+273.15)/1000)**8-'+;
-'.216661/100/((inm(getIndexOfIInM("24"),i)+273.15)/1000)**14)*(inm(getIndexOfIInM("23"),i)/100)**2'      &&60 i хпп
+'.216661/100/((inm(getIndexOfIInM("24"),i)+273.15)/1000)**14)*(inm(getIndexOfIInM("23"),i)/100)**2'
 
 * 61-ый - в 2 приема:
+&&61 i пр
 DO CIKL WITH getIndexOfIOutM("61"),'1/(2.6864264-.20096551*LOG(inm(getIndexOfIInM("41"),i))-2.16688/1E3*'+;
 'LOG(inm(getIndexOfIInM("41"),i))**2-9.480808/1E5*LOG(inm(getIndexOfIInM("41"),i))**3+6.135062/1E6*'+;
-'LOG(inm(getIndexOfIInM("41"),i))**4+3.6917245/1E6*LOG(inm(getIndexOfIInM("41"),i))**5)',.F.             &&61 i пр
+'LOG(inm(getIndexOfIInM("41"),i))**4+3.6917245/1E6*LOG(inm(getIndexOfIInM("41"),i))**5)',.F.
+&&61 i пр
 DO CIKL WITH getIndexOfIOutM("61"),'-753.317+6959.4093*oum(getIndexOfIOutM("61"),i)-29257.981*oum(getIndexOfIOutM("61"),i)**2+'+;
 '71285.169*oum(getIndexOfIOutM("61"),i)**3-86752.84*oum(getIndexOfIOutM("61"),i)**4+42641.056*'+;
-'oum(getIndexOfIOutM("61"),i)**5'                                                            &&61 i пр
+'oum(getIndexOfIOutM("61"),i)**5'
 
 DO CIKL WITH getIndexOfIOutM("62"),'IIF(inm(getIndexOfIInM("74"),i)=="1",1/0,'+;
 'IIF(inm(getIndexOfIInM("74"),i)=="2" OR inm(getIndexOfIInM("74"),i)=="3",F2(oum(getIndexOfIOutM("50"),i),oum(getIndexOfIOutM("10.1"),i),"2.83:2"),'+;
@@ -348,17 +455,24 @@ SELECT 3 && ftabl.dbf
 ENDIF
 && уникальный пересчет доли газа только дл€ параметра '/2' в реальн.врем.
 
-DO CIKL WITH getIndexOfIOutM("65"),'oum(getIndexOfIOutM("64"),i)/oum(getIndexOfIOutM("1"),i)'                            &&65 Q к бр
-oum(getIndexOfIOutM("65"),n_blokov+1)=CIKL1(getIndexOfIOutM("65"),oum(getIndexOfIOutM("64"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1))&&65 Q к бр
+&&65 Q к бр
+DO CIKL WITH getIndexOfIOutM("65"),'oum(getIndexOfIOutM("64"),i)/oum(getIndexOfIOutM("1"),i)'
+oum(getIndexOfIOutM("65"),n_blokov+1)=CIKL1(getIndexOfIOutM("65"),oum(getIndexOfIOutM("64"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1))
+&&65 Q к бр
 
-DO CIKL WITH getIndexOfIOutM("26"),'oum(getIndexOfIOutM("4"),i)*(oum(getIndexOfIOutM("57.1"),i)-oum(getIndexOfIOutM("60"),i))/.7/860'  &&26 Ё тф п
-DO CIKL WITH getIndexOfIOutM("27"),'IIF(oum(getIndexOfIOutM("4"),i)=0,0,F1(oum(getIndexOfIOutM("13"),i),"2.9в:1"))'      &&27 W п/тф
+&&26 Ё тф п
+DO CIKL WITH getIndexOfIOutM("26"),'oum(getIndexOfIOutM("4"),i)*(oum(getIndexOfIOutM("57.1"),i)-oum(getIndexOfIOutM("60"),i))/.7/860'
+
+&&27 W п/тф
+DO CIKL WITH getIndexOfIOutM("27"),'IIF(oum(getIndexOfIOutM("4"),i)=0,0,F1(oum(getIndexOfIOutM("13"),i),"2.9в:1"))'
 DO CIKL WITH getIndexOfIOutM("28"),'oum(getIndexOfIOutM("9"),i)-oum(getIndexOfIOutM("25"),i)*oum(getIndexOfIOutM("10"),i)/1E3-oum(getIndexOfIOutM("27"),i)*oum(getIndexOfIOutM("11"),i)/1E3'                                            &&28 N кн (ном)
+
+&&28 N кн (ном)
 sum=0
 FOR i=1 TO n_blokov
   sum=sum+oum(getIndexOfIOutM("28"),i)*oum(getIndexOfIOutM("1"),i)
 ENDFOR
-oum(getIndexOfIOutM("28"),n_blokov+1)=CIKL1(getIndexOfIOutM("28"),sum/oum(getIndexOfIOutM("1"),n_blokov+1))              &&28 N кн (ном)
+oum(getIndexOfIOutM("28"),n_blokov+1)=CIKL1(getIndexOfIOutM("28"),sum/oum(getIndexOfIOutM("1"),n_blokov+1))
 STORE 0 TO sum,sum1
 FOR i=1 TO n_blokov
   sum=sum+oum(getIndexOfIOutM("14"),i)
@@ -379,26 +493,33 @@ sum2=CEIL(IIF(BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6,n_blokov1,inm(getIndexOfIIn
 sum2=IIF(sum1=sum2,sum2+1,sum2)
 o29_01=EVAL('o29_'+STR(sum1,1))
 o29_02=EVAL('o29_'+STR(sum2,1))
+
+&&29 N цн (н) гр
 oum(getIndexOfIOutM("29"),n_blokov+1)=CIKL1(getIndexOfIOutM("29"),o29_01*(sum2-;
 IIF(BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6,n_blokov1,inm(getIndexOfIInM("89"),n_blokov+1)))+;
-o29_02*(IIF(BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6,n_blokov1,inm(getIndexOfIInM("89"),n_blokov+1))-sum1)) &&29 N цн (н) гр
-DO CIKL WITH getIndexOfIOutM("30"),'F1(oum(getIndexOfIOutM("13"),i),"2.95:1")/1E3'                         &&30 N кэн (н)
-DO CIKL WITH getIndexOfIOutM("31"),'0.36'                                                    &&31 N бл(н)т
+o29_02*(IIF(BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6,n_blokov1,inm(getIndexOfIInM("89"),n_blokov+1))-sum1))
+
+&&30 N кэн (н)
+DO CIKL WITH getIndexOfIOutM("30"),'F1(oum(getIndexOfIOutM("13"),i),"2.95:1")/1E3'
+
+&&31 N бл(н)т
+DO CIKL WITH getIndexOfIOutM("31"),'0.36'
 IF BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6
-oum(getIndexOfIOutM("32"),n_blokov+1)=CIKL1(getIndexOfIOutM("32"),F1(SUM('oum(getIndexOfIOutM("14"),')*n_blokov1,"2.11:1"))&&32 N ст(н)т гр
+	oum(getIndexOfIOutM("32"),n_blokov+1)=CIKL1(getIndexOfIOutM("32"),F1(SUM('oum(getIndexOfIOutM("14"),')*n_blokov1,"2.11:1"))&&32 N ст(н)т гр
 ELSE
-oum(getIndexOfIOutM("32"),n_blokov+1)=CIKL1(getIndexOfIOutM("32"),F1(SUM('oum(getIndexOfIOutM("14"),'),"2.11:1"))        &&32 N ст(н)т гр
+	oum(getIndexOfIOutM("32"),n_blokov+1)=CIKL1(getIndexOfIOutM("32"),F1(SUM('oum(getIndexOfIOutM("14"),'),"2.11:1"))        &&32 N ст(н)т гр
 ENDIF
+
 DO CIKL WITH getIndexOfIOutM("35"),'5.19*inm(getIndexOfIInM("69"),i)'                                     &&35 Ё т сн(пуск)
 oum(getIndexOfIOutM("35"),n_blokov+1)=CIKL1(getIndexOfIOutM("35"),SUM('oum(getIndexOfIOutM("35"),'))                     &&35 Ё т сн(пуск)
 IF BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6
-DO CIKL WITH getIndexOfIOutM("36"),'(1.03*(oum(getIndexOfIOutM("30"),i)*oum(getIndexOfIOutM("1"),i)+oum(getIndexOfIOutM("31"),i)*oum(getIndexOfIOutM("1"),i)+'+;
-'(oum(getIndexOfIOutM("29"),n_blokov+1)+oum(getIndexOfIOutM("32"),n_blokov+1))*inm(getIndexOfIInM("70"),n_blokov+1)/'+;
-'n_blokov1)+oum(getIndexOfIOutM("35"),i))/oum(getIndexOfIOutM("2"),i)*100'                                 &&36 Ё т сн/(ном)
+	DO CIKL WITH getIndexOfIOutM("36"),'(1.03*(oum(getIndexOfIOutM("30"),i)*oum(getIndexOfIOutM("1"),i)+oum(getIndexOfIOutM("31"),i)*oum(getIndexOfIOutM("1"),i)+'+;
+		'(oum(getIndexOfIOutM("29"),n_blokov+1)+oum(getIndexOfIOutM("32"),n_blokov+1))*inm(getIndexOfIInM("70"),n_blokov+1)/'+;
+		'n_blokov1)+oum(getIndexOfIOutM("35"),i))/oum(getIndexOfIOutM("2"),i)*100'                                 &&36 Ё т сн/(ном)
 ELSE
-DO CIKL WITH getIndexOfIOutM("36"),'(1.03*(oum(getIndexOfIOutM("30"),i)*oum(getIndexOfIOutM("1"),i)+oum(getIndexOfIOutM("31"),i)*oum(getIndexOfIOutM("1"),i)+'+;
-'(oum(getIndexOfIOutM("29"),n_blokov+1)+oum(getIndexOfIOutM("32"),n_blokov+1))*inm(getIndexOfIInM("70"),n_blokov+1)*oum(getIndexOfIOutM("2"),i)/'+;
-'oum(getIndexOfIOutM("2"),n_blokov+1))+oum(getIndexOfIOutM("35"),i))/oum(getIndexOfIOutM("2"),i)*100'                    &&36 Ё т сн/(ном)
+	DO CIKL WITH getIndexOfIOutM("36"),'(1.03*(oum(getIndexOfIOutM("30"),i)*oum(getIndexOfIOutM("1"),i)+oum(getIndexOfIOutM("31"),i)*oum(getIndexOfIOutM("1"),i)+'+;
+		'(oum(getIndexOfIOutM("29"),n_blokov+1)+oum(getIndexOfIOutM("32"),n_blokov+1))*inm(getIndexOfIInM("70"),n_blokov+1)*oum(getIndexOfIOutM("2"),i)/'+;
+		'oum(getIndexOfIOutM("2"),n_blokov+1))+oum(getIndexOfIOutM("35"),i))/oum(getIndexOfIOutM("2"),i)*100'                    &&36 Ё т сн/(ном)
 ENDIF
 STORE 0 TO sum,sum1,sum2
 FOR i=1 TO n_blokov
@@ -406,61 +527,81 @@ FOR i=1 TO n_blokov
   sum1=sum1+oum(getIndexOfIOutM("31"),i)*oum(getIndexOfIOutM("1"),i)
   sum2=sum2+oum(getIndexOfIOutM("35"),i)
 ENDFOR
+
+&&36 Ё т сн/(ном)
 oum(getIndexOfIOutM("36"),n_blokov+1)=CIKL1(getIndexOfIOutM("36"),(1.03*(sum+sum1+(oum(getIndexOfIOutM("29"),n_blokov+1)+oum(getIndexOfIOutM("32"),n_blokov+1))*;
-inm(getIndexOfIInM("70"),n_blokov+1))+sum2)/oum(getIndexOfIOutM("2"),n_blokov+1)*100)                     &&36 Ё т сн/(ном)
+inm(getIndexOfIInM("70"),n_blokov+1))+sum2)/oum(getIndexOfIOutM("2"),n_blokov+1)*100)
+
 DO CIKL WITH getIndexOfIOutM("37"),'oum(getIndexOfIOutM("29"),n_blokov+1)*inm(getIndexOfIInM("70"),n_blokov+1)*oum(getIndexOfIOutM("2"),i)/'+;
 'oum(getIndexOfIOutM("2"),n_blokov+1)/oum(getIndexOfIOutM("28"),i)/oum(getIndexOfIOutM("1"),i)*100'                      &&37 Ё цн (ном) гр
+
 oum(getIndexOfIOutM("37"),n_blokov+1)=CIKL1(getIndexOfIOutM("37"),oum(getIndexOfIOutM("29"),n_blokov+1)*inm(getIndexOfIInM("70"),n_blokov+1)/;
 oum(getIndexOfIOutM("28"),n_blokov+1)/oum(getIndexOfIOutM("1"),n_blokov+1)*100)                            &&37 Ё цн (ном) гр
+
 oum(getIndexOfIOutM("38"),n_blokov+1)=CIKL1(getIndexOfIOutM("38"),IIF(inm(getIndexOfIInM("43"),n_blokov+1)>10,0,;
 F2(inm(getIndexOfIInM("43"),n_blokov+1),(inm(getIndexOfIInM("70"),n_blokov+1)*6-oum(getIndexOfIOutM("1"),n_blokov+1))/;
 (6*inm(getIndexOfIInM("70"),n_blokov+1)),"2.13:2")))                                        &&38 Q т.о (отопл)
+
 oum(getIndexOfIOutM("39"),n_blokov+1)=CIKL1(getIndexOfIOutM("39"),IIF(inm(getIndexOfIInM("43"),n_blokov+1)>10,0,;
 F2(inm(getIndexOfIInM("43"),n_blokov+1),oum(getIndexOfIOutM("65"),n_blokov+1)/447.5,"2.13а:2")))          &&39 Q т.о (вент)
+
 DO CIKL WITH getIndexOfIOutM("40"),'15.4*inm(getIndexOfIInM("69"),i)'                                     &&40 Q т сн (пуск)
 oum(getIndexOfIOutM("40"),n_blokov+1)=CIKL1(getIndexOfIOutM("40"),SUM('oum(getIndexOfIOutM("40"),'))                     &&40 Q т сн (пуск)
 IF BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6
-DO CIKL WITH getIndexOfIOutM("41"),'(oum(getIndexOfIOutM("38"),n_blokov+1)+oum(getIndexOfIOutM("39"),n_blokov+1))*'+;
-'oum(getIndexOfIOutM("1"),i)*1E5/n_blokov1/(oum(getIndexOfIOutM("24"),i)*oum(getIndexOfIOutM("2"),i))'                   &&41 q т сн (ном)
+	DO CIKL WITH getIndexOfIOutM("41"),'(oum(getIndexOfIOutM("38"),n_blokov+1)+oum(getIndexOfIOutM("39"),n_blokov+1))*'+;
+		'oum(getIndexOfIOutM("1"),i)*1E5/n_blokov1/(oum(getIndexOfIOutM("24"),i)*oum(getIndexOfIOutM("2"),i))'                   &&41 q т сн (ном)
 ELSE
-DO CIKL WITH getIndexOfIOutM("41"),'((oum(getIndexOfIOutM("38"),n_blokov+1)+oum(getIndexOfIOutM("39"),n_blokov+1))*'+;
-'inm(getIndexOfIInM("70"),n_blokov+1)*oum(getIndexOfIOutM("1"),i)/oum(getIndexOfIOutM("1"),n_blokov+1)+oum(getIndexOfIOutM("40"),i))*'+;
-'1E5/(oum(getIndexOfIOutM("24"),i)*oum(getIndexOfIOutM("2"),i))'                                           &&41 q т сн (ном)
+	DO CIKL WITH getIndexOfIOutM("41"),'((oum(getIndexOfIOutM("38"),n_blokov+1)+oum(getIndexOfIOutM("39"),n_blokov+1))*'+;
+		'inm(getIndexOfIInM("70"),n_blokov+1)*oum(getIndexOfIOutM("1"),i)/oum(getIndexOfIOutM("1"),n_blokov+1)+oum(getIndexOfIOutM("40"),i))*'+;
+		'1E5/(oum(getIndexOfIOutM("24"),i)*oum(getIndexOfIOutM("2"),i))'                                           &&41 q т сн (ном)
 ENDIF
+
 oum(getIndexOfIOutM("41"),n_blokov+1)=CIKL1(getIndexOfIOutM("41"),((oum(getIndexOfIOutM("38"),n_blokov+1)+oum(getIndexOfIOutM("39"),n_blokov+1))*;
 inm(getIndexOfIInM("70"),n_blokov+1)+SUM('oum(getIndexOfIOutM("40"),'))*1E5/(oum(getIndexOfIOutM("24"),n_blokov+1)*;
 oum(getIndexOfIOutM("2"),n_blokov+1)))                                                       &&41 q т сн (ном)
+
 DO CIKL WITH getIndexOfIOutM("42"),'oum(getIndexOfIOutM("24"),i)*(100+oum(getIndexOfIOutM("41"),i))/(100-oum(getIndexOfIOutM("36"),i))'&&42 q т н (ном)
 oum(getIndexOfIOutM("42"),n_blokov+1)=CIKL1(getIndexOfIOutM("42"),oum(getIndexOfIOutM("24"),n_blokov+1)*(100+oum(getIndexOfIOutM("41"),n_blokov+1))/;
 (100-oum(getIndexOfIOutM("36"),n_blokov+1)))                                                 &&42 q т н (ном)
+
 DO CIKL WITH getIndexOfIOutM("43"),'(oum(getIndexOfIOutM("60"),i)+(oum(getIndexOfIOutM("59.1"),i)-oum(getIndexOfIOutM("60"),i))-oum(getIndexOfIOutM("63"),i))/'+;
 '(oum(getIndexOfIOutM("57.1"),i)+(oum(getIndexOfIOutM("59.1"),i)-oum(getIndexOfIOutM("60"),i))-oum(getIndexOfIOutM("63"),i))*(1+.4*(oum(getIndexOfIOutM("57.1"),i)-'+;
 'oum(getIndexOfIOutM("60"),i))/(oum(getIndexOfIOutM("57.1"),i)+(oum(getIndexOfIOutM("59.1"),i)-oum(getIndexOfIOutM("60"),i))-oum(getIndexOfIOutM("63"),i)))'&&43 k по
+
 DO CIKL WITH getIndexOfIOutM("44"),'IIF(inm(getIndexOfIInM("74"),i)=="1",0,((oum(getIndexOfIOutM("62"),i)-oum(getIndexOfIOutM("63"),i))/'+;
 '(oum(getIndexOfIOutM("57.1"),i)+(oum(getIndexOfIOutM("59.1"),i)-oum(getIndexOfIOutM("60"),i))-oum(getIndexOfIOutM("63"),i)))*(1+.4*(oum(getIndexOfIOutM("57.1"),i)+'+;
 '(oum(getIndexOfIOutM("59.1"),i)-oum(getIndexOfIOutM("60"),i))-oum(getIndexOfIOutM("62"),i))/(oum(getIndexOfIOutM("57.1"),i)+(oum(getIndexOfIOutM("59.1"),i)-'+;
 'oum(getIndexOfIOutM("60"),i))-oum(getIndexOfIOutM("63"),i))))'                                            &&44 k то
+
 DO CIKL WITH getIndexOfIOutM("45"),'IIF(oum(getIndexOfIOutM("3"),i)+oum(getIndexOfIOutM("4"),i)=0,0,(oum(getIndexOfIOutM("4"),i)*'+;
 '(1-oum(getIndexOfIOutM("43"),i))*oum(getIndexOfIOutM("8"),i))/(oum(getIndexOfIOutM("3"),i)+oum(getIndexOfIOutM("4"),i)))'             &&45 dQ э по
 oum(getIndexOfIOutM("45"),n_blokov+1)=CIKL1(getIndexOfIOutM("45"),SUM('oum(getIndexOfIOutM("45"),'))                     &&45 dQ э по
+
 DO CIKL WITH getIndexOfIOutM("46"),'IIF(oum(getIndexOfIOutM("3"),i)+oum(getIndexOfIOutM("4"),i)=0,0,(oum(getIndexOfIOutM("3"),i)*'+;
 '(1-oum(getIndexOfIOutM("44"),i))*oum(getIndexOfIOutM("8"),i))/(oum(getIndexOfIOutM("3"),i)+oum(getIndexOfIOutM("4"),i)))'             &&46 dQ э то
 oum(getIndexOfIOutM("46"),n_blokov+1)=CIKL1(getIndexOfIOutM("46"),SUM('oum(getIndexOfIOutM("46"),'))                     &&46 dQ э то
+
 DO CIKL WITH getIndexOfIOutM("47"),'(oum(getIndexOfIOutM("45"),i)+oum(getIndexOfIOutM("46"),i))'                         &&47 dQ э
 oum(getIndexOfIOutM("47"),n_blokov+1)=CIKL1(getIndexOfIOutM("47"),SUM('oum(getIndexOfIOutM("47"),'))                     &&47 dQ э
+
 DO CIKL WITH getIndexOfIOutM("48"),'(oum(getIndexOfIOutM("24"),i)*oum(getIndexOfIOutM("2"),i)*(100+oum(getIndexOfIOutM("41"),i))/1E5+oum(getIndexOfIOutM("47"),i))/'+;
 '(oum(getIndexOfIOutM("24"),i)*oum(getIndexOfIOutM("2"),i)*(100+oum(getIndexOfIOutM("41"),i))/1E5)'                      &&48 k отр (т)
+
 oum(getIndexOfIOutM("48"),n_blokov+1)=CIKL1(getIndexOfIOutM("48"),(oum(getIndexOfIOutM("24"),n_blokov+1)*oum(getIndexOfIOutM("2"),n_blokov+1)*;
 (100+oum(getIndexOfIOutM("41"),n_blokov+1))/1E5+SUM('oum(getIndexOfIOutM("47"),'))/(oum(getIndexOfIOutM("24"),n_blokov+1)*;
 oum(getIndexOfIOutM("2"),n_blokov+1)*(100+oum(getIndexOfIOutM("41"),n_blokov+1))/1E5))                     &&48 k отр (т)
 IF BL5
-DO CIKL WITH getIndexOfIOutM("66"),'oum(getIndexOfIOutM("49"),i)+inm(getIndexOfIInM("25"),i)*.004'                      &&66 D пв
+	DO CIKL WITH getIndexOfIOutM("66"),'oum(getIndexOfIOutM("49"),i)+inm(getIndexOfIInM("25"),i)*.004'                      &&66 D пв
 ELSE
-DO CIKL WITH getIndexOfIOutM("66"),'oum(getIndexOfIOutM("49"),i)+inm(getIndexOfIInM("27"),i)'                           &&66 D пв
+	DO CIKL WITH getIndexOfIOutM("66"),'oum(getIndexOfIOutM("49"),i)+inm(getIndexOfIInM("27"),i)'                           &&66 D пв
 ENDIF
+
+
 oum(getIndexOfIOutM("66"),n_blokov+1)=CIKL1(getIndexOfIOutM("66"),SUM('oum(getIndexOfIOutM("66"),'))                     &&66 D пв
+
 DO CIKL WITH getIndexOfIOutM("66.1"),'oum(getIndexOfIOutM("66"),i)/oum(getIndexOfIOutM("1"),i)'                          &&66.1 D пв ср
 oum(getIndexOfIOutM("66.1"),n_blokov+1)=CIKL1(getIndexOfIOutM("66.1"),SUM('oum(getIndexOfIOutM("66.1"),'))               &&66.1 D пв ср
+
 DO CIKL WITH getIndexOfIOutM("67"),'F2(oum(getIndexOfIOutM("65"),i),inm(getIndexOfIInM("59"),i),"2.65:2")'              &&67 alfa вэк (н)
 DO ALTERC WITH getIndexOfIOutM("67"),3,'F1(oum(getIndexOfIOutM("65"),i),"2.65в:1")'                        &&67 alfa вэк (н)
 DO ALTERC WITH getIndexOfIOutM("67"),4,'F1(oum(getIndexOfIOutM("65"),i),"2.65в:1")'                        &&67 alfa вэк (н)
@@ -524,7 +665,7 @@ DO ALTERC WITH getIndexOfIOutM("75"),4,'F1(oum(getIndexOfIOutM("65"),i),"2.23а:1
 DO ALTERC WITH getIndexOfIOutM("75"),5,'F1(oum(getIndexOfIOutM("65"),i),"2.21:1")'                         &&75 t ух исх
 DO ALTERC WITH getIndexOfIOutM("75"),6,'F1(oum(getIndexOfIOutM("65"),i),"2.21:1(6)")'                      &&75 t ух исх
 DO CIKL WITH getIndexOfIOutM("76"),'.2*(inm(getIndexOfIInM("26"),i)-oum(getIndexOfIOutM("74"),i))'                      &&76 dt ух (t пв)
-DO CIKL WITH getIndexOfIOutM("77"),'-.50*((inm(getIndexOfIInM("32"),i)+inm(getIndexOfIInM("32.1"),i))/2-30)'            &&77 dt ух (t вп)
+DO CIKL WITH getIndexOfIOutM("77"),'.50*((inm(getIndexOfIInM("32"),i)+inm(getIndexOfIInM("32.1"),i))/2-30)'            &&77 dt ух (t вп)
 DO CIKL WITH getIndexOfIOutM("78"),'-.3*((inm(getIndexOfIInM("32"),i)+inm(getIndexOfIInM("32.1"),i))/2-'+;
 '(inm(getIndexOfIInM("31"),i)+inm(getIndexOfIInM("31.1"),i))/2)'                                         &&78 dt ух (t рец)
 DO CIKL WITH getIndexOfIOutM("79"),'oum(getIndexOfIOutM("75"),i)+oum(getIndexOfIOutM("76"),i)+oum(getIndexOfIOutM("77"),i)+oum(getIndexOfIOutM("78"),i)'&&79 t ух (н)
@@ -654,55 +795,68 @@ oum(getIndexOfIOutM("105"),n_blokov+1)=CIKL1(getIndexOfIOutM("105"),F1(oum(getIn
 "2.51:1"))                                                                     &&105 N доп.пр (н)
 ENDIF
 
+&&105a Ё разм (н)	
 IF inm(getIndexOfIInM("43"),n_blokov+1)>0
-	IF BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6
-		oum(getIndexOfIOutM("105a"),n_blokov+1)=CIKL1 (getIndexOfIOutM("105a"), 0)
-	else
-		oum(getIndexOfIOutM("105a"),n_blokov+1)=0
-	endif
+	*DO CIKL WITH getIndexOfIOutM("105а"),'0'
+	oum(getIndexOfIOutM("105а"),n_blokov+1)=0
 ELSE
-	oum(getIndexOfIOutM("105a"),n_blokov+1)=F1(inm(getIndexOfIInM("43"),n_blokov+1),"2.51а:1") &&105a Ё разм (н)	
+	*DO CIKL WITH getIndexOfIOutM("105а"),'F1(inm(getIndexOfIInM("43"),n_blokov+1),"2.51а:1")'
+	oum(getIndexOfIOutM("105а"),n_blokov+1)=F1(inm(getIndexOfIInM("43"),n_blokov+1),"2.51а:1")
 ENDIF
 
 IF BL1 OR BL2 OR BL3 OR BL4 OR BL5 OR BL6
-oum(getIndexOfIOutM("106"),n_blokov+1)=CIKL1(getIndexOfIOutM("106"),(oum(getIndexOfIOutM("102"),n_blokov+1)+oum(getIndexOfIOutM("103"),n_blokov+1)+;
-oum(getIndexOfIOutM("104"),n_blokov+1)+oum(getIndexOfIOutM("105"),n_blokov+1))*inm(getIndexOfIInM("70"),n_blokov+1)/1E3/n_blokov1+;
-oum(getIndexOfIOutM("101"),n_blokov+1)*inm(getIndexOfIInM("88"),n_blokov+1)/1E3+;
-oum(getIndexOfIOutM("105a"),n_blokov+1)*inm(getIndexOfIInM("88"),n_blokov+1)/1E3) &&106 N пр (н)
+oum(getIndexOfIOutM("106"),n_blokov+1)=CIKL1(getIndexOfIOutM("106"), (oum(getIndexOfIOutM("102"),n_blokov+1)+oum(getIndexOfIOutM("103"),n_blokov+1)+oum(getIndexOfIOutM("104"),n_blokov+1)+oum(getIndexOfIOutM("105"),n_blokov+1))*inm(getIndexOfIInM("70"),n_blokov+1)/1E3/n_blokov1;
++oum(getIndexOfIOutM("101"),n_blokov+1)*inm(getIndexOfIInM("88"),n_blokov+1)/1E3+oum(getIndexOfIOutM("105а"),n_blokov+1)*inm(getIndexOfIInM("88"),n_blokov+1)/1E3) &&106 N пр (н)
 ELSE
 oum(getIndexOfIOutM("106"),n_blokov+1)=CIKL1(getIndexOfIOutM("106"),(oum(getIndexOfIOutM("102"),n_blokov+1)+oum(getIndexOfIOutM("103"),n_blokov+1)+;
 oum(getIndexOfIOutM("104"),n_blokov+1)+oum(getIndexOfIOutM("105"),n_blokov+1))*inm(getIndexOfIInM("70"),n_blokov+1)/1E3+;
 oum(getIndexOfIOutM("101"),n_blokov+1)*inm(getIndexOfIInM("88"),n_blokov+1)/1E3+;
-oum(getIndexOfIOutM("105a"),n_blokov+1)*inm(getIndexOfIInM("88"),n_blokov+1)/1E3) &&106 N пр (н)
+oum(getIndexOfIOutM("105а"),n_blokov+1)*inm(getIndexOfIInM("88"),n_blokov+1)/1E3) &&106 N пр (н)
 ENDIF
+
 DO CIKL WITH getIndexOfIOutM("107"),'6.19*inm(getIndexOfIInM("69"),i)'                                    &&107 Ё пуск (н)
 oum(getIndexOfIOutM("107"),n_blokov+1)=CIKL1(getIndexOfIOutM("107"),SUM('oum(getIndexOfIOutM("107"),'))                  &&107 Ё пуск (н)
+
 DO CIKL WITH getIndexOfIOutM("108"),'1.03*(oum(getIndexOfIOutM("95"),i)*oum(getIndexOfIOutM("64"),i)+oum(getIndexOfIOutM("98"),i)*oum(getIndexOfIOutM("90"),i)+'+;
 'oum(getIndexOfIOutM("99"),i)*oum(getIndexOfIOutM("66"),i)+oum(getIndexOfIOutM("100"),i)*oum(getIndexOfIOutM("90"),i))/1E3+1.03*'+;
 'oum(getIndexOfIOutM("106"),n_blokov+1)*oum(getIndexOfIOutM("64"),i)/oum(getIndexOfIOutM("64"),n_blokov+1)+oum(getIndexOfIOutM("107"),i)'&&108 Ё к сн (н)
+
 oum(getIndexOfIOutM("108"),n_blokov+1)=CIKL1(getIndexOfIOutM("108"),SUM('oum(getIndexOfIOutM("108"),'))                  &&108 Ё к сн (н)
+
 oum(getIndexOfIOutM("109"),n_blokov+1)=CIKL1(getIndexOfIOutM("109"),IIF(inm(getIndexOfIInM("43"),n_blokov+1)>10,0,;
 F2(inm(getIndexOfIInM("43"),n_blokov+1),(6*inm(getIndexOfIInM("70"),n_blokov+1)-;
 oum(getIndexOfIOutM("1"),n_blokov+1))/(6*inm(getIndexOfIInM("70"),n_blokov+1)),"2.93:2")))                &&109 Q от к (н)
+
 oum(getIndexOfIOutM("110"),n_blokov+1)=CIKL1(getIndexOfIOutM("110"),IIF(inm(getIndexOfIInM("43"),n_blokov+1)>10,0,;
 F2(inm(getIndexOfIInM("43"),n_blokov+1),oum(getIndexOfIOutM("65"),n_blokov+1)/447.5,"2.94:2")))             &&110 Q от к (н)
+
 oum(getIndexOfIOutM("111"),n_blokov+1)=CIKL1(getIndexOfIOutM("111"),IIF(inm(getIndexOfIInM("43"),n_blokov+1)>10,0,;
 F1(inm(getIndexOfIInM("43"),n_blokov+1),"2.12:1")))                                         &&111 Q от IIк (н)
+
 oum(getIndexOfIOutM("112"),n_blokov+1)=CIKL1(getIndexOfIOutM("112"),IIF(inm(getIndexOfIInM("43"),n_blokov+1)>10,0,;
 F1(inm(getIndexOfIInM("43"),n_blokov+1),"2.14:1")))                                         &&112 Q пвк (н)
+
 oum(getIndexOfIOutM("113"),n_blokov+1)=CIKL1(getIndexOfIOutM("113"),;
 F2((inm(getIndexOfIInM("78"),n_blokov+1)+inm(getIndexOfIInM("79"),n_blokov+1))/inm(getIndexOfIInM("70"),n_blokov+1),inm(getIndexOfIInM("91"),n_blokov+1),"2.15:2"))  &&113 Q об.в (н)
+
 oum(getIndexOfIOutM("114"),n_blokov+1)=CIKL1(getIndexOfIOutM("114"),IIF(inm(getIndexOfIInM("43"),n_blokov+1)>=0,0,;
 F1(inm(getIndexOfIInM("43"),n_blokov+1),"2.16:1")))                                         &&114 Q разм (н)
+
 oum(getIndexOfIOutM("115"),n_blokov+1)=CIKL1(getIndexOfIOutM("115"),F1(inm(getIndexOfIInM("43"),n_blokov+1),"2.28:1"))  &&115 Q мх (н)
+
 oum(getIndexOfIOutM("116"),n_blokov+1)=CIKL1(getIndexOfIOutM("116"),IIF(inm(getIndexOfIInM("61"),n_blokov+1)=0,0,;
 F1(inm(getIndexOfIInM("43"),n_blokov+1),"2.52:1")))                                         &&116 Q маз сл (н)
 *oum(getIndexOfIOutM("117"),n_blokov+1)=CIKL1(getIndexOfIOutM("117"),IIF(inm(getIndexOfIInM("43"),n_blokov+1)>0,0,;
 F2(inm(getIndexOfIInM("62"),n_blokov+1),inm(getIndexOfIInM("43"),n_blokov+1),"2.56:2")))                 &&117 Q пр.сл (н)
+
 oum(getIndexOfIOutM("117"),n_blokov+1)=CIKL1(getIndexOfIOutM("117"),IIF(.T.,0,;
 F2(inm(getIndexOfIInM("62"),n_blokov+1),inm(getIndexOfIInM("43"),n_blokov+1),"2.56:2")))                 &&117 Q пр.сл (н)
-oum(getIndexOfIOutM("118"),n_blokov+1)=CIKL1(getIndexOfIOutM("118"),F1(SUM('oum(getIndexOfIOutM("65"),'),"2.60:1"))      &&118 Q пр (н)
-DO CIKL WITH getIndexOfIOutM("119"),'15.4*inm(getIndexOfIInM("69"),i)'                                    &&119 Q пуск (н)
+
+&&118 Q пр (н)
+oum(getIndexOfIOutM("118"),n_blokov+1)=CIKL1(getIndexOfIOutM("118"),F1(SUM('oum(getIndexOfIOutM("65"),'),"2.60:1"))
+
+&&119 Q пуск (н)
+DO CIKL WITH getIndexOfIOutM("119"),'15.4*inm(getIndexOfIInM("69"),i)'
 oum(getIndexOfIOutM("119"),n_blokov+1)=CIKL1(getIndexOfIOutM("119"),SUM('oum(getIndexOfIOutM("119"),'))                  &&119 Q пуск (н)
 oum(getIndexOfIOutM("120"),n_blokov+1)=CIKL1(getIndexOfIOutM("120"),(oum(getIndexOfIOutM("109"),n_blokov+1)+oum(getIndexOfIOutM("110"),n_blokov+1)+;
 oum(getIndexOfIOutM("111"),n_blokov+1)+oum(getIndexOfIOutM("112"),n_blokov+1)+oum(getIndexOfIOutM("113"),n_blokov+1)+;
