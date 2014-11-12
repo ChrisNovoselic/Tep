@@ -5,9 +5,12 @@ PARAMETER BL,KTSpath,RealTime,resolut
 * параметр resolut => разрешение экрана
 PUBLIC BL1,BL2,BL3,BL4,BL5,BL6,;
 		DefaultDir, ProgramDir
-PRIVATE tauWork, resolutWidthDefault, resolutHeightDefault
+PRIVATE tauWork, resolutWidthDefault, resolutHeightDefaultб RealTimeAllBlockMenuItems
+
 resolutWidthDefault = 1100
 resolutHeightDefault = 700
+RealTimeAllBlockMenuItems = .T.
+
 DO CASE
    CASE PARAM()=1
         BL1=IIF(BL='/1',.T.,.F.)
@@ -107,28 +110,6 @@ WITH _Screen
      .Caption="Расчет ТЭП"
 ENDWITH
 
-*wait wind DefaultDir
-*wait wind iif(WEXIST('Расчет ТЭП'),'YES Расчет ТЭП','NO Расчет ТЭП')
-*DO tmenu WITH "Выход"
-
-*!*	IF RealTime = .T. then
-*!*		tauWork = 1
-*!*		
-*!*		COPY FILE KTSpath + "\A\TEPW_RT\inblok.dbf" TO inblok.dbf
-*!*		
-*!*		USE inblok
-*!*		LOCATE FOR ALLTRIM(UPPER(inblok.order)) = '1'
-*!*		REPLACE inblok.Blok1 WITH STR(tauWork)
-*!*		REPLACE inblok.Blok2 WITH STR(tauWork)
-*!*		REPLACE inblok.Blok3 WITH STR(tauWork)
-*!*		REPLACE inblok.Blok4 WITH STR(tauWork)
-*!*		REPLACE inblok.Blok5 WITH STR(tauWork)
-*!*		REPLACE inblok.Blok6 WITH STR(tauWork)
-*!*		CLOSE ALTERNATE inblok
-*!*	ELSE
-*!*		tauWork = 24
-*!*	ENDIF
-
 DEFINE POPUPS MAIN FROM 05,21 IN SCREEN FONT "Courier New",11 TITLE '[ГЛАВНОЕ МЕНЮ]';
 COLOR bg/w*,n/w*,gr+/w,gr+/w,,n/gr*
 DEFINE BAR IIF(RealTime,1,1) OF MAIN PROMPT 'Расчет ПВК                         ' SKIP FOR RealTime
@@ -137,71 +118,65 @@ DEFINE BAR IIF(RealTime,1,3) OF MAIN PROMPT 'Расчет нормативных показателей     
 DEFINE BAR IIF(RealTime,1,4) OF MAIN PROMPT 'Расчет макета 15506-1              ' SKIP FOR RealTime
 DEFINE BAR IIF(RealTime,1,5) OF MAIN PROMPT 'Работа с s-базами                  ' SKIP FOR BL1 OR BL2 OR BL3 OR;
 BL4 OR BL5 OR BL6 OR RealTime
-DEFINE BAR IIF(RealTime,1,6) OF MAIN PROMPT 'Расчет ТЭП блока '+;
-IIF(BL1,'№1',IIF(BL2,'№2',IIF(BL3,'№3',IIF(BL4,'№4',IIF(BL5,'№5',IIF(BL6,'№6',''))))));
-SKIP FOR NOT RealTime
-DEFINE BAR IIF(RealTime,2,7) OF MAIN PROMPT 'Выход                              '
+IF RealTime = .T.
+IF RealTimeAllBlockMenuItems = .F.
+DEFINE BAR IIF(RealTime,1,6) OF MAIN PROMPT 'Расчет ТЭП блока '+IIF(BL1,'№1',IIF(BL2,'№2',IIF(BL3,'№3',IIF(BL4,'№4',IIF(BL5,'№5',IIF(BL6,'№6','')))))) SKIP FOR NOT RealTime
+ELSE
+DEFINE BAR IIF(RealTime,1,6) OF MAIN PROMPT 'Расчет ТЭП блока '+'№1' SKIP FOR NOT RealTime
+DEFINE BAR IIF(RealTime,2,7) OF MAIN PROMPT 'Расчет ТЭП блока '+'№2' SKIP FOR NOT RealTime
+DEFINE BAR IIF(RealTime,3,8) OF MAIN PROMPT 'Расчет ТЭП блока '+'№3' SKIP FOR NOT RealTime
+DEFINE BAR IIF(RealTime,4,9) OF MAIN PROMPT 'Расчет ТЭП блока '+'№4' SKIP FOR NOT RealTime
+DEFINE BAR IIF(RealTime,5,10) OF MAIN PROMPT 'Расчет ТЭП блока '+'№5' SKIP FOR NOT RealTime
+DEFINE BAR IIF(RealTime,6,11) OF MAIN PROMPT 'Расчет ТЭП блока '+'№6' SKIP FOR NOT RealTime
+ENDIF
+ELSE
+ENDIF
+DEFINE BAR IIF(RealTime,IIF(RealTimeAllBlockMenuItems, 7, 2),6) OF MAIN PROMPT 'Выход                              '
+
 ON SELECTION POPUPS MAIN DO tmenu WITH PROMPT()
-	
+
 public FormNum   && переменная для table1.scx
 PUBLIC TTK_L1,TTK_L2,TTK_L3,TTK_L4,TTK_L_EXCEL, TTK_P1,TTK_P2,TTK_P3  && переменные для tri_tkv.scx
-STORE .F. TO TTK_L1,TTK_L2,TTK_L3,TTK_L4, TTK_L_EXCEL
-STORE .F. TO TTK_P1,TTK_P2,TTK_P3
+
+PUBLIC loc_date,;
+	iden1, iden2,;
+	imes1, imes2,;
+	igod1, igod2,;
+	ichas1, ichas2,;
+	n_blokov, n_blokov1, Tek_N,;
+	filtr,minus,;
+	Show_b1, Show_b2,Show_b3,Show_b4,Show_b5,Show_b6,Show_opisanie, Show_station,Show_gruppa,Show_pk,Show_pvk,; && фл.наличия на экране и на печати полей opisanie
+	begm,endm,;
+	begd,endd	
+	
+*Число блоков по умолчанию
+n_blokov1=3
+
+STORE .T. TO Show_opisanie,Show_b1,Show_b2,Show_b3,Show_b4,Show_b5,Show_b6,Show_station,;
+Show_gruppa,Show_pk,Show_pvk && фл.наличия на экране и на печати полей opisanie,;
+*blok1-blok6, station, gruppa, pk, pvk вх.и вых.таблиц
+STORE .T. TO Show_oppvk,Show_pvk1,Show_pvk2,Show_pvk3,Show_pvk4,Show_pvk5,Show_pvk6,Show_pvk7,Show_vsepvk && фл.наличия на экране 
+*и на печати полей opisanie,pvk1-pvk7, vsepvk вх.и вых.таблиц
+
 public mes(12) && используется в PERIODTI.SCX
 dimension inblok(11)
 FOR i=1 TO 12
     mes(i)=SUBSTR("Январь  Февраль Март    Апрель  Май     Июнь    "+;
            "Июль    Август  СентябрьОктябрь Ноябрь  Декабрь ",(i-1)*8+1,8)
 ENDFOR
-minus=.F.  && исп-ся в FUNC entr(TEP.PRG), FUNC exit(TEP.PRG)
-filtr='off'          && вначале фильтрация по кл.'f' для '*' отсутствует (в TABLE1.SCX)
-n_blokov1=3          && число работающих блоков (3 - от фонаря)
-Tek_N=''             && текущий номер в inblok.dbf (для proc goto в tep.prg)
-STORE .T. TO Show_opisanie,Show_b1,Show_b2,Show_b3,Show_b4,Show_b5,Show_b6,Show_station,;
-Show_gruppa,Show_pk,Show_pvk && фл.наличия на экране и на печати полей opisanie,;
-*blok1-blok6, station, gruppa, pk, pvk вх.и вых.таблиц
-STORE .T. TO Show_oppvk,Show_pvk1,Show_pvk2,Show_pvk3,Show_pvk4,Show_pvk5,Show_pvk6,Show_pvk7,Show_vsepvk && фл.наличия на экране 
-*и на печати полей opisanie,pvk1-pvk7, vsepvk вх.и вых.таблиц
-DO CASE
-   CASE BL1
-        STORE .F. TO Show_b2,Show_b3,Show_b4,Show_b5,Show_b6
-   CASE BL2
-        STORE .F. TO Show_b1,Show_b3,Show_b4,Show_b5,Show_b6
-   CASE BL3
-        STORE .F. TO Show_b1,Show_b2,Show_b4,Show_b5,Show_b6
-   CASE BL4
-        STORE .F. TO Show_b1,Show_b2,Show_b3,Show_b5,Show_b6
-   CASE BL5
-        STORE .F. TO Show_b1,Show_b2,Show_b3,Show_b4,Show_b6
-   CASE BL6
-        STORE .F. TO Show_b1,Show_b2,Show_b3,Show_b4,Show_b5
-ENDCASE
-***для ТЭП в темпе процесса*** опред-ие(локализация) тек.даты (до 00:15 тек.дата еще равна вчерашней)
-loc_date=IIF(VAL(SUBSTR(TIME(),4,2))<15 AND VAL(SUBSTR(TIME(),1,2))=0,date()-1,date())
-STORE 10 TO igod2
-STORE MONTH(loc_date) TO imes2 && конечн.месяц
-STORE DAY(loc_date) TO iden2   && конечн.день
-STORE VAL(SUBSTR(TIME(),1,2))+1 TO ichas2  && конечн.час. +1, т.к. array chas в форме periodtime индексируется от 0 до 23 (вместо от 1 до 24)
-ichas2=IIF(VAL(SUBSTR(TIME(),4,2))<15,IIF(ichas2=1,24,ichas2-1),ichas2) && в перв.15 мин.каждого часа нов.час еще не настал
-ichas1=IIF(ichas2=1,24,ichas2-1) && нач.час старше конечного на 1
-*ichas2=IIF(ichas2=1,24,ichas2-1) && СДВИГ НАЗАД НА -1 ***
-*ichas1=IIF(ichas1=1,24,ichas1-1) && СДВИГ НАЗАД НА -1 ***
-iden1=DAY(IIF(ichas1>ichas2,loc_date-1,loc_date)) && нач.день
-imes1=MONTH(IIF(iden1>iden2,loc_date-1,loc_date)) && нач.месяц
-igod1=IIF(imes1>imes2,igod2-1,igod2)              && нач.год
-RELEASE loc_date
-***для ТЭП в темпе процесса***
-STORE date() TO begd,endd && для s_base.prg
-STORE TRANSF(MONTH(date()),"@L 99") TO begm,endm && для s_base.prg
+
 USE cor_in
 PUBLIC cor_in_arr(reccount(),2)
 COPY TO ARRAY cor_in_arr
+
+***FTABL.DBF***
+IF FILE('FTABL.CDX')
+   delete FILE ftabl.CDX
+ELSE   
+ENDIF
 USE ftabl
-IF NOT FILE('FTABL.CDX')
-   INDEX ON id TAG id
-ELSE
-   REINDEX
-ENDIF   
+INDEX ON id TAG id
+
 IF FILE('S_BLOK.DBF')
    USE s_blok
    IF NOT FILE('S_BLOK.CDX')
@@ -251,7 +226,11 @@ do while .T.
   ms=MONTH(DATE())
   yr=2
   DO scr WITH "Более подробно о программе - по [F1]","w+/w"
-  ACTIVATE POPUPS MAIN
+  IF RealTime = .T.
+  	ACTIVATE POPUPS MAIN BAR IIF (BL1, 1, IIF (BL2, 2, IIF (BL3, 3, IIF (BL4, 4, IIF (BL5, 5, IIF (BL6, 6, 1))))))
+  ELSE
+  	ACTIVATE POPUPS MAIN
+  ENDIF
 enddo
 *****************************************************************************
 *                          Procedure   tmenu                                *
@@ -260,15 +239,50 @@ PROCEDURE tmenu
 PARAMETERS MPROMPT
 DO CASE
    CASE MPROMPT="Расчет ПВК"
+   		Initialize ()
       DO pvk
    CASE MPROMPT="Расчет ПК"
    CASE MPROMPT="Расчет нормативных показателей"
+   		Initialize ()
       DO prg3
    CASE MPROMPT="Расчет макета 15506-1"
+   		Initialize ()
       DO prg4
    CASE MPROMPT="Работа с s-базами"
+   		Initialize ()
       DO sel_type
+	CASE MPROMPT="Расчет ТЭП блока №1"
+		BL1 = .T.
+		STORE .F. TO BL2, BL3, BL4, BL5, BL6
+		Initialize ()
+		DO REALTIME
+	CASE MPROMPT="Расчет ТЭП блока №2"
+		BL2 = .T.
+		STORE .F. TO BL1, BL3, BL4, BL5, BL6
+		Initialize ()
+		DO REALTIME
+	CASE MPROMPT="Расчет ТЭП блока №3"
+		BL3 = .T.
+		STORE .F. TO BL1, BL2, BL4, BL5, BL6
+		Initialize ()
+		DO REALTIME
+	CASE MPROMPT="Расчет ТЭП блока №4"
+		BL4 = .T.
+		STORE .F. TO BL1, BL2, BL3, BL5, BL6
+		Initialize()	
+		DO REALTIME
+	CASE MPROMPT="Расчет ТЭП блока №5"
+		BL5 = .T.
+		STORE .F. TO BL1, BL2, BL3, BL4, BL6
+		Initialize ()
+		DO REALTIME
+	CASE MPROMPT="Расчет ТЭП блока №6"
+		BL6 = .T.
+		STORE .F. TO BL1, BL2, BL3, BL4, BL5
+		Initialize ()
+		DO REALTIME
    CASE MPROMPT="Расчет ТЭП блока"
+   		Initialize ()
       DO REALTIME
    CASE MPROMPT="Выход"
       WITH _Screen
@@ -294,7 +308,55 @@ DO CASE
       CANCEL
 ENDCASE
 @ 0,0 SAY "Более подробно о программе - по [F1]"
+
 RETURN
+
+*****************************************************************************
+*                          Procedure   init                                *
+*****************************************************************************
+PROCEDURE initialize
+
+STORE .F. TO TTK_L1,TTK_L2,TTK_L3,TTK_L4, TTK_L_EXCEL
+STORE .F. TO TTK_P1,TTK_P2,TTK_P3
+
+***для ТЭП в темпе процесса*** опред-ие(локализация) тек.даты (до 00:15 тек.дата еще равна вчерашней)
+loc_date=IIF(VAL(SUBSTR(TIME(),4,2))<15 AND VAL(SUBSTR(TIME(),1,2))=0,date()-1,date())
+STORE 10 TO igod2
+STORE MONTH(loc_date) TO imes2 && конечн.месяц
+STORE DAY(loc_date) TO iden2   && конечн.день
+STORE VAL(SUBSTR(TIME(),1,2))+1 TO ichas2  && конечн.час. +1, т.к. array chas в форме periodtime индексируется от 0 до 23 (вместо от 1 до 24)
+ichas2=IIF(VAL(SUBSTR(TIME(),4,2))<15,IIF(ichas2=1,24,ichas2-1),ichas2) && в перв.15 мин.каждого часа нов.час еще не настал
+ichas1=IIF(ichas2=1,24,ichas2-1) && нач.час старше конечного на 1
+*ichas2=IIF(ichas2=1,24,ichas2-1) && СДВИГ НАЗАД НА -1 ***
+*ichas1=IIF(ichas1=1,24,ichas1-1) && СДВИГ НАЗАД НА -1 ***
+iden1=DAY(IIF(ichas1>ichas2,loc_date-1,loc_date)) && нач.день
+imes1=MONTH(IIF(iden1>iden2,loc_date-1,loc_date)) && нач.месяц
+igod1=IIF(imes1>imes2,igod2-1,igod2)              && нач.год
+RELEASE loc_date
+***для ТЭП в темпе процесса***
+STORE date() TO begd,endd && для s_base.prg
+STORE TRANSF(MONTH(date()),"@L 99") TO begm,endm && для s_base.prg
+
+minus=.F.  && исп-ся в FUNC entr(TEP.PRG), FUNC exit(TEP.PRG)
+filtr='off'          && вначале фильтрация по кл.'f' для '*' отсутствует (в TABLE1.SCX)
+*n_blokov1=3          && число работающих блоков (3 - от фонаря)
+Tek_N=''             && текущий номер в inblok.dbf (для proc goto в tep.prg)
+
+DO CASE
+   CASE BL1
+        STORE .F. TO Show_b2,Show_b3,Show_b4,Show_b5,Show_b6
+   CASE BL2
+        STORE .F. TO Show_b1,Show_b3,Show_b4,Show_b5,Show_b6
+   CASE BL3
+        STORE .F. TO Show_b1,Show_b2,Show_b4,Show_b5,Show_b6
+   CASE BL4
+        STORE .F. TO Show_b1,Show_b2,Show_b3,Show_b5,Show_b6
+   CASE BL5
+        STORE .F. TO Show_b1,Show_b2,Show_b3,Show_b4,Show_b6
+   CASE BL6
+        STORE .F. TO Show_b1,Show_b2,Show_b3,Show_b4,Show_b5
+ENDCASE
+
 *****************************************************************************
 PROCEDURE scr
 PARAMETERS text,clr

@@ -170,13 +170,19 @@ PUBLIC cor_in_arr(reccount(),2)
 COPY TO ARRAY cor_in_arr
 
 ***FTABL.DBF***
-IF FILE('FTABL.CDX')
-   delete FILE ftabl.CDX
-ELSE   
+IF FILE('FTABL.DBF')
+	IF FILE('FTABL.CDX')
+	   *elete FILE ftabl.CDX
+	   USE ftabl INDEX ftabl.CDX
+	   REINDEX
+	ELSE
+		USE ftabl
+		INDEX ON id TAG id
+	ENDIF
+ELSE
 ENDIF
-USE ftabl
-INDEX ON id TAG id
 
+***S_BLOK.DBF***
 IF FILE('S_BLOK.DBF')
    USE s_blok
    IF NOT FILE('S_BLOK.CDX')
@@ -186,6 +192,8 @@ IF FILE('S_BLOK.DBF')
       REINDEX
    ENDIF
 ENDIF
+
+***S_OUTBL.DBF***
 IF FILE('S_OUTBL.DBF')
    USE s_outbl
    IF NOT FILE('S_OUTBL.CDX')
