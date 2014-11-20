@@ -6,8 +6,8 @@ STORE date() TO data1,data2
 WrongHours=SPACE(4)
 PRIV n,fl,i,j,j1,RealHour
 do forma PERIODTI
-@ 09,25 TO 12,56 COLOR w+/b*
-@ 10,30 say " Ж Д И Т Е ... "  FONT "Courier New",10 STYLE 'B'
+*@ 09,25 TO 12,56 COLOR w+/b*
+*@ 10,30 say " Ж Д И Т Е ... "  FONT "Courier New",10 STYLE 'B'
 data1=CTOD(STR(DEN(IDEN1),2)+'.'+STR(IMES1,2)+'.'+STR(GOD(IGOD1),4))
 data2=CTOD(STR(DEN(IDEN2),2)+'.'+STR(IMES2,2)+'.'+STR(GOD(IGOD2),4))
 time1=CHAS(ICHAS1)
@@ -262,11 +262,32 @@ IF error=0
    *        IIF(i47_5/NumbHours>=1.0,'2','1')),;
    *        inblok.blok6 WITH IIF(NumbHours=0,inblok.blok6,;
    *        IIF(i47_6/NumbHours>=1.0,'2','1'))
+   
+   * Для перенаправления ответственности за режим блока (06.10.2014)
+   * на сотрудников ПТО (по договоренности)
+   LOCATE FOR ALLTRIM(SUBSTR(order,2))=='74'
+   public in_mode
+   DO CASE
+      CASE BL1
+           STORE inblok.blok1 TO in_mode
+      CASE BL2
+           STORE inblok.blok2 TO in_mode
+      CASE BL3
+           STORE inblok.blok3 TO in_mode
+      CASE BL4
+           STORE inblok.blok4 TO in_mode
+      CASE BL5
+           STORE inblok.blok5 TO in_mode
+      CASE BL6
+           STORE inblok.blok6 TO in_mode
+   ENDCASE
+   in_mode = ALLTRIM(in_mode)
+   
    USE
    clear
    do precalc.prg with 'outblok','calc.prg'
    KEYB'{ENTER}'
-   do precalc.prg with 'outmkt','calc_m.prg'
+   do precalc.prg with 'outmkt','calc_m.prg'   
    ************************** вывод таблицы
    SELECT 2
    USE outmkt

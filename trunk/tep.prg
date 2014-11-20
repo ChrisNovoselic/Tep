@@ -169,6 +169,18 @@ USE cor_in
 PUBLIC cor_in_arr(reccount(),2)
 COPY TO ARRAY cor_in_arr
 
+***sut3tec.DBF***
+IF FILE('sut3tec.DBF')
+	IF FILE('sut3tec.CDX')
+	   USE sut3tec INDEX sut3tec.CDX
+	   REINDEX
+	ELSE
+		USE sut3tec
+		INDEX ON DATA TAG DATA of sut3tec.dbf
+	ENDIF
+ELSE
+ENDIF
+
 ***FTABL.DBF***
 IF FILE('FTABL.DBF')
 	IF FILE('FTABL.CDX')
