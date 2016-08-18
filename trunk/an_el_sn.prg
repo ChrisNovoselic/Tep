@@ -167,7 +167,8 @@ ON ERROR
 a2(16,7)=inm(getIndexOfIInM('9.6'),7)
 titul(8,2)='’¬ќ (подпитка котлов) (тыс.к¬тч)'
 ON ERROR a2(17,7)='    -'
-a2(17,7)=iom(getIndexOfIIoM('105'),7)*inm(getIndexOfIInM('70'),7)/1E3
+a2(17,7)=iom(getIndexOfIIoM('105'),7)*inm(getIndexOfIInM('70'),7)/1E3 +;
+	iom(getIndexOfIIoM('105а'),7)*inm(getIndexOfIInM('88'),7)/1E3
 ON ERROR
 a2(18,7)=inm(getIndexOfIInM('9.7'),7)
 titul(9,2)='ƒополнительные прочие по котлу (тыс.к¬тч)'

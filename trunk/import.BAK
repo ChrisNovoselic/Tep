@@ -9,9 +9,8 @@ IF 'PAR_TPN'$NameFile OR 'PAR_TPM'$NameFile OR 'PAR_TPD'$NameFile
 *!*				NumHour (i) = 24
 *!*			endfor
    	ELSE
-	   FOR i=1 TO 12  &&           I  II III  IV   V  VI VII VIII IX   X  XI XII
-	       NumHour(i)=VAL(SUBS(' 744 672 744 720 744 720 744 744 720 744 720 744',;
-	       4*(i-1)+1,4))
+	   FOR i = 1 TO 12  &&           I  II III  IV   V  VI VII VIII IX   X  XI XII
+	       NumHour (i) = VAL (SUBS (' 744 672 744 720 744 720 744 744 720 744 720 744', 4 * (i - 1) + 1 , 4))
 	   ENDFOR
 	ENDIF
 ENDIF

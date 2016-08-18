@@ -649,8 +649,8 @@ FOR i=1 TO n_blokov
 ENDFOR
 DO CIKL1 WITH getIndexOfIOutM("167"),sum/SUM('oum(getIndexOfIOutM("17"),'),'    -','    -','    -'         &&167 t ут
 DO CIKL WITH getIndexOfIOutM("168"),'F2(oum(getIndexOfIOutM("164"),i),inm(getIndexOfIInM("59"),i),"2.41:2")'            &&168 Уѓэ (э)
-DO ALTERC WITH getIndexOfIOutM("168"),3,'3.4'                                                &&168 Уѓэ (э)
-DO ALTERC WITH getIndexOfIOutM("168"),4,'3.4'                                                &&168 Уѓэ (э)
+DO ALTERC WITH getIndexOfIOutM("168"),3,'3.0'                                                &&168 Уѓэ (э)
+DO ALTERC WITH getIndexOfIOutM("168"),4,'3.0'                                                &&168 Уѓэ (э)
 DO ALTERC WITH getIndexOfIOutM("168"),5,'4.1'                                                &&168 Уѓэ (э)
 *O ALTERC WITH getIndexOfIOutM("168"),5,'F1(oum(getIndexOfIOutM("164"),i),"2.42:1")'                       &&168 Уѓэ (э)
 DO ALTERC WITH getIndexOfIOutM("168"),6,'F1(oum(getIndexOfIOutM("164"),i),"2.41:1(6)")'                    &&168 Уѓэ (э)

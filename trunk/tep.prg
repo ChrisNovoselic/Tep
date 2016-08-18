@@ -169,18 +169,6 @@ USE cor_in
 PUBLIC cor_in_arr(reccount(),2)
 COPY TO ARRAY cor_in_arr
 
-***sut3tec.DBF***
-IF FILE('sut3tec.DBF')
-	IF FILE('sut3tec.CDX')
-	   USE sut3tec INDEX sut3tec.CDX
-	   REINDEX
-	ELSE
-		USE sut3tec
-		INDEX ON DATA TAG DATA of sut3tec.dbf
-	ENDIF
-ELSE
-ENDIF
-
 ***FTABL.DBF***
 IF FILE('FTABL.DBF')
 	IF FILE('FTABL.CDX')
@@ -194,27 +182,45 @@ IF FILE('FTABL.DBF')
 ELSE
 ENDIF
 
-***S_BLOK.DBF***
-IF FILE('S_BLOK.DBF')
-   USE s_blok
-   IF NOT FILE('S_BLOK.CDX')
-      INDEX ON DATA UNIQUE FOR S_BLOK.PERIOD="DAY" TAG DATA
-      INDEX ON PERIOD UNIQUE FOR S_BLOK.PERIOD#"DAY" TAG PERIOD
-   ELSE
-      REINDEX
-   ENDIF
+IF RealTime=.F.
+	***sut3tec.DBF***
+	IF FILE('sut3tec.DBF')=.T.		
+		IF FILE('sut3tec.CDX')=.T.
+	   		USE sut3tec INDEX sut3tec.CDX
+		   	REINDEX
+		ELSE
+			USE sut3tec
+			INDEX ON DATA TAG DATA &&of sut3tec.dbf
+		ENDIF
+	ELSE
+	ENDIF
+	
+	***S_BLOK.DBF***
+	IF FILE('S_BLOK.DBF')
+   		USE s_blok
+	   	IF NOT FILE('S_BLOK.CDX')
+      		INDEX ON DATA UNIQUE FOR S_BLOK.PERIOD="DAY" TAG DATA
+      		INDEX ON PERIOD UNIQUE FOR S_BLOK.PERIOD#"DAY" TAG PERIOD
+   		ELSE
+      		REINDEX
+   		ENDIF
+   	ELSE
+	ENDIF
+
+	***S_OUTBL.DBF***
+	IF FILE('S_OUTBL.DBF')
+   		USE s_outbl
+   		IF NOT FILE('S_OUTBL.CDX')
+      		INDEX ON month+STR(year,4) UNIQUE TAG month
+      		INDEX ON YEAR UNIQUE TAG YEAR
+   		ELSE
+      		REINDEX
+   		ENDIF
+   	ELSE
+	ENDIF
+ELSE
 ENDIF
 
-***S_OUTBL.DBF***
-IF FILE('S_OUTBL.DBF')
-   USE s_outbl
-   IF NOT FILE('S_OUTBL.CDX')
-      INDEX ON month+STR(year,4) UNIQUE TAG month
-      INDEX ON YEAR UNIQUE TAG YEAR
-   ELSE
-      REINDEX
-   ENDIF
-ENDIF
 USE
 
 DO scr WITH "","bg+/n"

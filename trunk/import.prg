@@ -56,27 +56,7 @@ ENDDO
 = FCLOSE(n)
 DELETE FILE WRK.WRK
 IF Iter=LastIter  && если итерация заключительная
-IF 'PAR_EL'$NameFile
-   IF BL5
-      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'
-      _2b5_d_2st=VAL(inblok.blok5)/VAL(inblok.station)
-      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='4'
-      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
-      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
-      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b5_d_2st,10,2)
-      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='7'
-      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
-      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
-      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b5_d_2st,10,2)
-      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='10'  && ??? 1.10c не использ.в реал.времени!!!
-      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
-      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
-      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b5_d_2st,10,2)
-      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'   && ??? 1.2c не использ.в реал.времени!!!
-      REPLACE inblok.station WITH inblok.blok5
-      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='3'
-      REPLACE inblok.station WITH inblok.blok5
-   ENDIF
+IF 'PAR_EL'$NameFile   
    IF BL1
       LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'
       _2b1_d_2st=VAL(inblok.blok1)/VAL(inblok.station)
@@ -156,6 +136,26 @@ IF 'PAR_EL'$NameFile
       REPLACE inblok.station WITH inblok.blok4
       LOCATE FOR ALLTRIM(SUBSTR(order,2))=='3'
       REPLACE inblok.station WITH inblok.blok4
+   ENDIF
+   IF BL5
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'
+      _2b5_d_2st=VAL(inblok.blok5)/VAL(inblok.station)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='4'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b5_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='7'
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b5_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='10'  && ??? 1.10c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH STR((VAL(inblok.station)-;
+      VAL(inblok.blok1)-VAL(inblok.blok2)-VAL(inblok.blok3)-;
+      VAL(inblok.blok4)-VAL(inblok.blok5)-VAL(inblok.blok6))*_2b5_d_2st,10,2)
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'   && ??? 1.2c не использ.в реал.времени!!!
+      REPLACE inblok.station WITH inblok.blok5
+      LOCATE FOR ALLTRIM(SUBSTR(order,2))=='3'
+      REPLACE inblok.station WITH inblok.blok5
    ENDIF
    IF BL6
       LOCATE FOR ALLTRIM(SUBSTR(order,2))=='2'
