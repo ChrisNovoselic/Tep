@@ -226,8 +226,14 @@ ENDFOR
 DO CIKL1 WITH getIndexOfIOutM("57"),sum/SUM('oum(getIndexOfIOutM("17"),'),'    -',sum/SUM('oum(getIndexOfIOutM("17"),'),'    -'&&57 (q3+q4) /н
 DO CIKL WITH getIndexOfIOutM("58"),'iom(getIndexOfIIoM("73"),i)'                                          &&58 q3(н)+q4(н)
 DO CIKL1 WITH getIndexOfIOutM("58"),iom(getIndexOfIIoM("73"),n_blokov+1),'    -',iom(getIndexOfIIoM("73"),n_blokov+1),'    -'&&58 q3(н)+q4(н)
+&&15.06.2017 - доработка
+IF BL6
 DO CIKL WITH getIndexOfIOutM("59"),'(21-(.02*iom(getIndexOfIIoM("89"),i)/1E2+.1*inm(getIndexOfIInM("59"),i)/1E2)*'+;
-'(inm(getIndexOfIInM("35"),i)+inm(getIndexOfIInM("36"),i))/2)/(21-(inm(getIndexOfIInM("35"),i)+inm(getIndexOfIInM("36"),i))/2)'    &&59 alfa р
+	'(inm(getIndexOfIInM("35"),i)+inm(getIndexOfIInM("35"),i))/2)/(21-(inm(getIndexOfIInM("35"),i)+inm(getIndexOfIInM("35"),i))/2)'    &&59 alfa р
+ELSE
+DO CIKL WITH getIndexOfIOutM("59"),'(21-(.02*iom(getIndexOfIIoM("89"),i)/1E2+.1*inm(getIndexOfIInM("59"),i)/1E2)*'+;
+	'(inm(getIndexOfIInM("35"),i)+inm(getIndexOfIInM("36"),i))/2)/(21-(inm(getIndexOfIInM("35"),i)+inm(getIndexOfIInM("36"),i))/2)'    &&59 alfa р
+ENDIF
 sum=0
 FOR i=1 TO n_blokov
     sum=sum+oum(getIndexOfIOutM("59"),i)*oum(getIndexOfIOutM("17"),i)
