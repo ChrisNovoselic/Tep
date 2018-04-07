@@ -31,6 +31,9 @@ ON ERROR i=i
 
 DO COR_IN.PRG  && ПРОВЕРКА КОРРЕКТНОСТИ ВХ.ТАБЛ.
 
+&& Отладка F2(60,120,"2.4а:2")
+&& Отладка F3(360,80,550,"2.71:3")
+
 && 1 TAU раб
 DO CIKL WITH getIndexOfIOutM("1"),'inm(getIndexOfIInM("1"),i)'
 oum(getIndexOfIOutM("1"),n_blokov+1)=CIKL1(getIndexOfIOutM("1"),SUM('inm(getIndexOfIInM("1"),'))
